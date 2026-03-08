@@ -101,7 +101,8 @@ export async function PUT(
     await prisma.activity.create({
       data: {
         type: 'COLUMNS_REORDERED',
-        data: {
+        description: `Reordered columns in "${board.title}"`,
+        metadata: {
           boardId: params.id,
           boardTitle: board.title,
           columnOrder: columnIds,

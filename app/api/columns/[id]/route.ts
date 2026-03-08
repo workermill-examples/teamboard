@@ -52,7 +52,8 @@ export async function PUT(
       await prisma.activity.create({
         data: {
           type: 'COLUMN_UPDATED',
-          data: {
+          description: `Renamed column from "${column.title}" to "${updatedColumn.title}" in "${column.board.title}"`,
+          metadata: {
             columnId: updatedColumn.id,
             columnTitle: updatedColumn.title,
             boardId: column.boardId,
@@ -130,7 +131,8 @@ export async function DELETE(
     await prisma.activity.create({
       data: {
         type: 'COLUMN_DELETED',
-        data: {
+        description: `Deleted column "${column.title}" from "${column.board.title}"`,
+        metadata: {
           columnId: column.id,
           columnTitle: column.title,
           boardId: column.boardId,
