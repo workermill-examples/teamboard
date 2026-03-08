@@ -108,7 +108,7 @@ export function OverdueCountCard({ count }: OverdueCountCardProps) {
         </motion.div>
       </CardHeader>
       <CardContent>
-        <div className={`text-2xl font-bold ${styles.text}`}>
+        <div className={`text-2xl font-bold ${styles.text}`} data-testid="overdue-count">
           {isVisible ? <AnimatedCounter value={count} duration={800} /> : 0}
         </div>
         <motion.p

@@ -112,7 +112,7 @@ function DashboardContent() {
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
         {/* Total Cards */}
-        <Card>
+        <Card data-testid="total-cards">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Cards</CardTitle>
           </CardHeader>
@@ -125,7 +125,7 @@ function DashboardContent() {
         </Card>
 
         {/* Completed Cards */}
-        <Card>
+        <Card data-testid="completed-cards">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Completed</CardTitle>
           </CardHeader>
@@ -141,7 +141,9 @@ function DashboardContent() {
         </Card>
 
         {/* Overdue Count with Animation */}
-        <OverdueCountCard count={stats.overdueCount} />
+        <div data-testid="stat-overdue-count">
+          <OverdueCountCard count={stats.overdueCount} />
+        </div>
 
         {/* Active Cards */}
         <Card>
@@ -160,7 +162,7 @@ function DashboardContent() {
       </div>
 
       {/* Charts Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6" data-testid="dashboard-charts">
         {/* Tasks by Status Pie Chart */}
         <Card>
           <CardHeader>
@@ -170,7 +172,9 @@ function DashboardContent() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <TasksByStatusPie data={stats.tasksByStatus} />
+            <div data-testid="chart-tasks-by-status">
+              <TasksByStatusPie data={stats.tasksByStatus} />
+            </div>
           </CardContent>
         </Card>
 
@@ -183,7 +187,9 @@ function DashboardContent() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <TasksByAssigneeBar data={stats.tasksByAssignee} />
+            <div data-testid="chart-tasks-by-assignee">
+              <TasksByAssigneeBar data={stats.tasksByAssignee} />
+            </div>
           </CardContent>
         </Card>
 
@@ -196,7 +202,9 @@ function DashboardContent() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <TasksOverTimeLine data={stats.tasksOverTime} />
+            <div data-testid="chart-tasks-over-time">
+              <TasksOverTimeLine data={stats.tasksOverTime} />
+            </div>
           </CardContent>
         </Card>
       </div>

@@ -9,10 +9,10 @@ test.describe('Members Management', () => {
   })
 
   test.describe('Members List', () => {
-    test('should display workspace members', async ({ page }) => {
+    test('should display member list that loads', async ({ page }) => {
       await expect(page.locator('h1')).toContainText('Members')
 
-      // Should show members list
+      // Ticket requirement: member list loads
       const memberCount = await page.locator('[data-testid="member-item"]').count()
       expect(memberCount).toBeGreaterThan(0)
 
@@ -39,23 +39,25 @@ test.describe('Members Management', () => {
       await expect(firstMember.locator('[data-testid="member-joined"]')).toBeVisible()
     })
 
-    test('should show different role badges', async ({ page }) => {
+    test('should show role badges visible', async ({ page }) => {
       const members = page.locator('[data-testid="member-item"]')
       const memberCount = await members.count()
 
-      // Should have different roles from seed data
+      // Ticket requirement: role badges visible
       for (let i = 0; i < memberCount; i++) {
         const member = members.nth(i)
         const role = member.locator('[data-testid="member-role"]')
 
         // Role should be one of: Owner, Admin, Member, Viewer
         await expect(role).toContainText(/(Owner|Admin|Member|Viewer)/)
+        await expect(role).toBeVisible()
       }
     })
   })
 
   test.describe('Member Invitation', () => {
-    test('should show invite form for admins', async ({ page }) => {
+    test('should show invite flow for admins and above', async ({ page }) => {
+      // Ticket requirement: invite flow (Admin+)
       // Demo user is Owner, should see invite form
       await expect(page.locator('[data-testid="invite-form"]')).toBeVisible()
 
@@ -101,7 +103,8 @@ test.describe('Members Management', () => {
   })
 
   test.describe('Role Management', () => {
-    test('should change member role', async ({ page }) => {
+    test('should allow role change', async ({ page }) => {
+      // Ticket requirement: role change
       // Find a member that's not the owner
       const nonOwnerMember = page.locator('[data-testid="member-item"]:not(:has-text("Owner"))').first()
 

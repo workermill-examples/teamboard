@@ -67,3 +67,87 @@ jobs:
 
       - name: Security audit
         run: npm audit --audit-level=high
+
+  e2e:
+    runs-on: ubuntu-latest
+    needs: quality
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: teamboard
+          POSTGRES_PASSWORD: teamboard
+          POSTGRES_DB: teamboard
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Prisma client
+        run: npx prisma generate
+
+      - name: Push database schema
+        run: npx prisma db push
+        env:
+          DATABASE_URL: postgresql://teamboard:teamboard@localhost:5432/teamboard
+          DIRECT_DATABASE_URL: postgresql://teamboard:teamboard@localhost:5432/teamboard
+
+      - name: Build application
+        run: npm run build
+        env:
+          DATABASE_URL: postgresql://teamboard:teamboard@localhost:5432/teamboard
+          DIRECT_DATABASE_URL: postgresql://teamboard:teamboard@localhost:5432/teamboard
+          NEXTAUTH_SECRET: test-secret-for-ci
+          NEXTAUTH_URL: http://localhost:3000
+          AUTH_TRUST_HOST: true
+
+      - name: Seed test database
+        run: npm run db:seed
+        env:
+          DATABASE_URL: postgresql://teamboard:teamboard@localhost:5432/teamboard
+          DIRECT_DATABASE_URL: postgresql://teamboard:teamboard@localhost:5432/teamboard
+          SEED_TOKEN: local-dev-seed-token
+
+      - name: Verify seed data
+        run: ./scripts/verify-seed.sh
+        env:
+          DATABASE_URL: postgresql://teamboard:teamboard@localhost:5432/teamboard
+          DIRECT_DATABASE_URL: postgresql://teamboard:teamboard@localhost:5432/teamboard
+          EXPECTED_CARDS: 30
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Run E2E tests
+        run: npm run test:e2e
+        env:
+          DATABASE_URL: postgresql://teamboard:teamboard@localhost:5432/teamboard
+          DIRECT_DATABASE_URL: postgresql://teamboard:teamboard@localhost:5432/teamboard
+          NEXTAUTH_SECRET: test-secret-for-ci
+          NEXTAUTH_URL: http://localhost:3000
+          AUTH_TRUST_HOST: true
+          SEED_TOKEN: local-dev-seed-token
+
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30

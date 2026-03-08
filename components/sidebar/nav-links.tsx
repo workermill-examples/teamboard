@@ -91,6 +91,7 @@ export function NavLinks({ workspace, variant }: NavLinksProps) {
                 ? 'bg-primary-50 text-primary-700 border-l-2 border-primary-500'
                 : 'text-muted-700 hover:bg-muted-100 hover:text-foreground'
             )}
+            data-testid={`nav-${item.name.toLowerCase()}`}
           >
             <item.icon className="w-5 h-5 flex-shrink-0" />
             <span>{item.name}</span>
@@ -109,6 +110,7 @@ export function NavLinks({ workspace, variant }: NavLinksProps) {
             size="sm"
             onClick={() => setBoardsExpanded(!boardsExpanded)}
             className="flex items-center gap-1 p-1 h-auto text-sm font-medium text-muted-700 hover:text-foreground"
+            data-testid={`nav-boards${variant === 'mobile' ? '-mobile' : '-desktop'}`}
           >
             {boardsExpanded ? (
               <ChevronDownIcon className="w-4 h-4" />

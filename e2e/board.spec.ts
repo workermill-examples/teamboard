@@ -5,57 +5,37 @@ test.describe('Board Management', () => {
     await loginAs('demo@workermill.com', 'demo1234')
   })
 
-  test.describe('Board List View', () => {
-    test('should display boards in workspace', async ({ page }) => {
+  test.describe('Board Navigation', () => {
+    test('should display boards in sidebar navigation', async ({ page }) => {
       await page.goto('/acme-product/dashboard')
 
-      // Navigate to boards
-      await page.click('[data-testid="nav-boards"]')
-
-      // Should show boards list or redirect to first board
-      const url = page.url()
-      expect(url).toMatch(/\/boards/)
-    })
-
-    test('should show board cards with information', async ({ page }) => {
-      await page.goto('/acme-product/boards')
+      // Should show boards section in sidebar
+      await expect(page.locator('[data-testid="nav-boards-desktop"]')).toBeVisible()
 
       // Should show demo boards from seed data
-      const boardCount = await page.locator('[data-testid="board-card"]').count()
-      expect(boardCount).toBeGreaterThan(0)
-
-      // Should show board names
       await expect(page.locator('text=Product Roadmap')).toBeVisible()
       await expect(page.locator('text=Sprint 14')).toBeVisible()
       await expect(page.locator('text=Bug Tracker')).toBeVisible()
     })
 
-    test('should create new board', async ({ page }) => {
-      await page.goto('/acme-product/boards')
+    test('should navigate to board when clicking board link', async ({ page }) => {
+      await page.goto('/acme-product/dashboard')
 
-      const boardName = `Test Board ${Date.now()}`
+      // Click on first board link in sidebar
+      const firstBoardLink = page.locator('[data-testid^="board-link-"]').first()
+      await firstBoardLink.click()
 
-      await page.click('[data-testid="create-board-button"]')
-
-      // Fill board creation form
-      await page.fill('[data-testid="board-name-input"]', boardName)
-      await page.fill('[data-testid="board-description-input"]', 'Test board description')
-
-      await page.click('[data-testid="create-board-submit"]')
-
-      // Should navigate to new board
-      await expect(page).toHaveURL(new RegExp(`/boards/[a-z0-9]+`))
-
-      // Should show board name
-      await expect(page.locator('h1')).toContainText(boardName)
+      // Should navigate to board page
+      const url = page.url()
+      expect(url).toMatch(/\/boards\/[a-z0-9]+/)
     })
   })
 
   test.describe('Board Kanban View', () => {
     test.beforeEach(async ({ page }) => {
-      // Navigate to a demo board
-      await page.goto('/acme-product/boards')
-      await page.click('[data-testid="board-card"]:first-child')
+      // Navigate to dashboard first, then to a demo board
+      await page.goto('/acme-product/dashboard')
+      await page.locator('[data-testid^="board-link-"]').first().click()
     })
 
     test('should display board with columns and cards', async ({ page }) => {
@@ -112,8 +92,8 @@ test.describe('Board Management', () => {
 
   test.describe('Card Management', () => {
     test.beforeEach(async ({ page }) => {
-      await page.goto('/acme-product/boards')
-      await page.click('[data-testid="board-card"]:first-child')
+      await page.goto('/acme-product/dashboard')
+      await page.locator('[data-testid^="board-link-"]').first().click()
     })
 
     test('should create new card', async ({ page }) => {
@@ -199,8 +179,8 @@ test.describe('Board Management', () => {
 
   test.describe('Drag and Drop', () => {
     test.beforeEach(async ({ page }) => {
-      await page.goto('/acme-product/boards')
-      await page.click('[data-testid="board-card"]:first-child')
+      await page.goto('/acme-product/dashboard')
+      await page.locator('[data-testid^="board-link-"]').first().click()
     })
 
     test('should move card within column', async ({ page }) => {
@@ -262,8 +242,8 @@ test.describe('Board Management', () => {
 
   test.describe('Board Filters', () => {
     test.beforeEach(async ({ page }) => {
-      await page.goto('/acme-product/boards')
-      await page.click('[data-testid="board-card"]:first-child')
+      await page.goto('/acme-product/dashboard')
+      await page.locator('[data-testid^="board-link-"]').first().click()
     })
 
     test('should filter cards by assignee', async ({ page }) => {

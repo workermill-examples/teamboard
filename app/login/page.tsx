@@ -82,6 +82,7 @@ function LoginForm() {
                   disabled={loading}
                   autoComplete="email"
                   required
+                  data-testid="email"
                 />
               </div>
 
@@ -97,6 +98,7 @@ function LoginForm() {
                   disabled={loading}
                   autoComplete="current-password"
                   required
+                  data-testid="password"
                 />
               </div>
 
@@ -111,6 +113,7 @@ function LoginForm() {
                 className="w-full"
                 loading={loading}
                 disabled={loading}
+                data-testid="login-button"
               >
                 {loading ? 'Signing in...' : 'Sign in'}
               </Button>

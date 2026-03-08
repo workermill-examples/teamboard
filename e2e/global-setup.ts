@@ -9,7 +9,7 @@ async function globalSetup() {
     // Call seed API to ensure demo data is available
     const response = await page.request.post('/api/seed', {
       headers: {
-        'Authorization': 'Bearer local-dev-seed-token'
+        'Authorization': 'Bearer test-seed-token-for-local-development'
       }
     })
 

@@ -314,7 +314,7 @@ export function BoardView({ workspaceSlug, boardId, onCardClick, className }: Bo
         onDragEnd={handleDragEnd}
       >
         {/* Horizontal scrolling container */}
-        <div className="h-full overflow-x-auto overflow-y-hidden">
+        <div className="h-full overflow-x-auto overflow-y-hidden" data-testid="board-container">
           <div className="flex space-x-6 p-6 min-w-max">
             {columns.map((column) => (
               <Column
