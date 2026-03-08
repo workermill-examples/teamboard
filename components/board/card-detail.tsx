@@ -227,6 +227,7 @@ function CardDetailContent({
                   'transition-all duration-200'
                 )}
                 placeholder="Card title..."
+                data-testid="card-title-edit"
               />
             </div>
 
@@ -260,6 +261,7 @@ function CardDetailContent({
                   !description && !isEditing && 'text-muted-600'
                 )}
                 placeholder="Add a description..."
+                data-testid="card-detail-description"
                 onFocus={() => setIsEditing(true)}
               />
             </div>
@@ -343,7 +345,7 @@ function CardDetailContent({
                 </div>
 
                 {/* Labels */}
-                <div className="space-y-2">
+                <div className="space-y-2" data-testid="labels-section">
                   <label className="text-sm font-medium text-muted-700">Labels</label>
                   <LabelPicker
                     selectedLabels={cardDetails.labels}
@@ -470,7 +472,7 @@ export function CardDetail({
       />
 
       {/* Modal */}
-      <div className="relative w-full max-w-4xl max-h-[90vh] mx-4 bg-background rounded-lg shadow-xl overflow-hidden animate-in fade-in-0 zoom-in-95">
+      <div className="relative w-full max-w-4xl max-h-[90vh] mx-4 bg-background rounded-lg shadow-xl overflow-hidden animate-in fade-in-0 zoom-in-95" data-testid="card-detail-modal">
         <div className="h-full overflow-y-auto">
           <Suspense fallback={<div className="p-6 text-center">Loading...</div>}>
             <CardDetailContent
