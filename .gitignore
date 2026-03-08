@@ -10,3 +10,8 @@ out
 .nuxt
 .output
 .svelte-kit
+
+# Environment variables
+.env
+.env.*
+!.env.example

@@ -69,7 +69,7 @@ test.describe('Authentication Flow', () => {
       await expect(page).toHaveURL('/workspaces')
 
       // Should show user is logged in
-      await expect(page.locator('[data-testid="user-menu"]').first()).toBeVisible()
+      await expect(page.locator('[data-testid="user-menu-desktop"]')).toBeVisible()
     })
   })
 
@@ -121,7 +121,7 @@ test.describe('Authentication Flow', () => {
       await expect(page).toHaveURL('/workspaces')
 
       // Should show user is logged in
-      await expect(page.locator('[data-testid="user-menu"]').first()).toBeVisible()
+      await expect(page.locator('[data-testid="user-menu-desktop"]')).toBeVisible()
     })
   })
 
@@ -160,7 +160,7 @@ test.describe('Authentication Flow', () => {
       await expect(page).toHaveURL('/workspaces')
 
       // Click user menu
-      await page.click('[data-testid="user-menu"]')
+      await page.click('[data-testid="user-menu-desktop"]')
 
       // Click logout
       await page.click('text=Sign out')
@@ -188,7 +188,7 @@ test.describe('Authentication Flow', () => {
 
       // Should still be authenticated
       await expect(page).toHaveURL('/workspaces')
-      await expect(page.locator('[data-testid="user-menu"]').first()).toBeVisible()
+      await expect(page.locator('[data-testid="user-menu-desktop"]')).toBeVisible()
     })
 
     test('should handle callback URL redirect after login', async ({ page }) => {
