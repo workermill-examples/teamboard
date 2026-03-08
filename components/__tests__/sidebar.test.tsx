@@ -10,15 +10,15 @@ import { useAuth } from '@/hooks/use-auth'
 vi.mock('next/navigation')
 vi.mock('@/hooks/use-workspace')
 vi.mock('@/hooks/use-auth')
-vi.mock('next/link', () => {
+vi.mock('next/link', () => ({
   default: function MockLink({ children, href, ...props }: { children: React.ReactNode; href: string }) {
     return <a href={href} {...props}>{children}</a>
   }
-})
+}))
 
-const mockUsePathname = usePathname as any<typeof usePathname>
-const mockUseWorkspace = useWorkspace as any<typeof useWorkspace>
-const mockUseAuth = useAuth as any<typeof useAuth>
+const mockUsePathname = usePathname as vi.MockedFunction<typeof usePathname>
+const mockUseWorkspace = useWorkspace as vi.MockedFunction<typeof useWorkspace>
+const mockUseAuth = useAuth as vi.MockedFunction<typeof useAuth>
 
 const mockWorkspace = {
   id: '1',
@@ -75,7 +75,7 @@ const mockWorkspaceContext = {
 
 describe('Sidebar Navigation', () => {
   beforeEach(() => {
-    jest.clearAllMocks()
+    vi.clearAllMocks()
 
     mockUsePathname.mockReturnValue('/acme-product/dashboard')
     mockUseWorkspace.mockReturnValue(mockWorkspaceContext)

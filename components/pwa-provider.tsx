@@ -52,7 +52,6 @@ export function PWAProvider({ children }: PWAProviderProps) {
       if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
         navigator.serviceWorker.ready.then(registration => {
           if ('sync' in window.ServiceWorkerRegistration.prototype) {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             return (registration as any).sync?.register('offline-card-moves');
           }
         }).catch(console.error);

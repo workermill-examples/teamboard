@@ -234,3 +234,83 @@ export function EyeIcon({ className, ...props }: IconProps) {
     </svg>
   )
 }
+
+export function EditIcon({ className, ...props }: IconProps) {
+  return (
+    <svg
+      className={cn('w-5 h-5', className)}
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+      {...props}
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+    </svg>
+  )
+}
+
+export function TrashIcon({ className, ...props }: IconProps) {
+  return (
+    <svg
+      className={cn('w-5 h-5', className)}
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+      {...props}
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+    </svg>
+  )
+}
+
+export function LoaderIcon({ className, ...props }: IconProps) {
+  return (
+    <svg
+      className={cn('w-5 h-5', className)}
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+      {...props}
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+    </svg>
+  )
+}
+
+export function AlertTriangleIcon({ className, ...props }: IconProps) {
+  return (
+    <svg
+      className={cn('w-5 h-5', className)}
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+      {...props}
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+    </svg>
+  )
+}
+
+// Icons namespace for backward compatibility
+export const Icons = {
+  Menu: MenuIcon,
+  X: XIcon,
+  ChevronDown: ChevronDownIcon,
+  ChevronRight: ChevronRightIcon,
+  Plus: PlusIcon,
+  LayoutDashboard: LayoutDashboardIcon,
+  Folder: FolderIcon,
+  Activity: ActivityIcon,
+  Users: UsersIcon,
+  Settings: SettingsIcon,
+  Star: StarIcon,
+  User: UserIcon,
+  LogOut: LogOutIcon,
+  Crown: CrownIcon,
+  Shield: ShieldIcon,
+  Eye: EyeIcon,
+  Edit: EditIcon,
+  Trash: TrashIcon,
+  Loader: LoaderIcon,
+  AlertTriangle: AlertTriangleIcon,
+}

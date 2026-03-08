@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { cn } from '@/lib/utils'
 
 const features = [
@@ -124,10 +125,10 @@ export function Features() {
         {/* CTA */}
         <div className="mt-20 text-center">
           <p className="text-lg text-secondary-600 mb-8">
-            Ready to transform your team's productivity?
+            Ready to transform your team&apos;s productivity?
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
+            <Link
               href="/login"
               className={cn(
                 "inline-flex items-center justify-center px-8 py-3 text-base font-medium",
@@ -138,7 +139,7 @@ export function Features() {
               )}
             >
               Start Free Trial
-            </a>
+            </Link>
             <a
               href="#how-it-works"
               className={cn(

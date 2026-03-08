@@ -55,6 +55,7 @@ function CommentItem({
       <div className="flex-shrink-0">
         <div className="w-8 h-8 rounded-full bg-primary-500 text-primary-50 text-sm font-medium flex items-center justify-center">
           {comment.user.avatar ? (
+            // eslint-disable-next-line @next/next/no-img-element
             <img
               src={comment.user.avatar}
               alt={comment.user.name}

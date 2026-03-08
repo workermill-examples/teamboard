@@ -47,6 +47,7 @@ function WorkspaceListContent() {
     if (isAuthenticated) {
       fetchWorkspaces()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated])
 
   const fetchWorkspaces = async () => {

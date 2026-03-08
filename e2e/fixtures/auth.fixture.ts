@@ -20,6 +20,7 @@ export const test = base.extend<AuthFixture>({
       await page.waitForSelector('[data-testid="user-menu-desktop"]')
     }
 
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     await use(loginAs)
   }
 })

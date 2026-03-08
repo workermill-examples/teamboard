@@ -108,7 +108,7 @@ function CardDetailContent({
 
     try {
       setSaving(true)
-      await updateCard({ description: description.trim() || null })
+      await updateCard({ description: description.trim() || undefined })
       onCardUpdated?.()
     } catch (error) {
       setDescription(cardDetails?.description || '')
@@ -242,7 +242,10 @@ function CardDetailContent({
                 ref={descriptionRef}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                onBlur={handleSaveDescription}
+                onBlur={() => {
+                  setIsEditing(false)
+                  handleSaveDescription()
+                }}
                 onKeyDown={(e) => {
                   if (e.key === 'Escape') {
                     setDescription(cardDetails.description || '')
@@ -258,7 +261,6 @@ function CardDetailContent({
                 )}
                 placeholder="Add a description..."
                 onFocus={() => setIsEditing(true)}
-                onBlur={() => setIsEditing(false)}
               />
             </div>
           </div>
@@ -324,7 +326,7 @@ function CardDetailContent({
                   <label className="text-sm font-medium text-muted-700">Assignee</label>
                   <AssigneePicker
                     value={cardDetails.assignee || null}
-                    onChange={(assignee) => handleUpdateCard({ assignee })}
+                    onChange={(assignee) => handleUpdateCard({ assignee: assignee || undefined })}
                     availableAssignees={availableAssignees}
                     disabled={saving}
                   />
@@ -335,7 +337,7 @@ function CardDetailContent({
                   <label className="text-sm font-medium text-muted-700">Due Date</label>
                   <DueDatePicker
                     value={cardDetails.dueDate || null}
-                    onChange={(dueDate) => handleUpdateCard({ dueDate })}
+                    onChange={(dueDate) => handleUpdateCard({ dueDate: dueDate || undefined })}
                     disabled={saving}
                   />
                 </div>
@@ -356,7 +358,7 @@ function CardDetailContent({
                   <label className="text-sm font-medium text-muted-700">Cover</label>
                   <CoverColorPicker
                     value={cardDetails.coverColor || null}
-                    onChange={(coverColor) => handleUpdateCard({ coverColor })}
+                    onChange={(coverColor) => handleUpdateCard({ coverColor: coverColor || undefined })}
                     disabled={saving}
                   />
                 </div>

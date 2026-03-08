@@ -10,10 +10,10 @@ vi.mock('next-auth/react')
 vi.mock('next/navigation')
 vi.mock('@/hooks/use-auth')
 
-const mockUseSession = useSession as any<typeof useSession>
-const mockSignIn = signIn as any<typeof signIn>
-const mockUseRouter = useRouter as any<typeof useRouter>
-const mockUseSearchParams = useSearchParams as any<typeof useSearchParams>
+const mockUseSession = useSession as vi.MockedFunction<typeof useSession>
+const mockSignIn = signIn as vi.MockedFunction<typeof signIn>
+const mockUseRouter = useRouter as vi.MockedFunction<typeof useRouter>
+const mockUseSearchParams = useSearchParams as vi.MockedFunction<typeof useSearchParams>
 
 // Mock the auth hooks
 import * as useAuth from '@/hooks/use-auth'

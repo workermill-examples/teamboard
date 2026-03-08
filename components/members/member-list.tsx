@@ -234,6 +234,7 @@ export function MemberList() {
                 {/* Avatar */}
                 <div className="h-10 w-10 bg-primary-100 rounded-full flex items-center justify-center">
                   {member.user.avatar ? (
+                    // eslint-disable-next-line @next/next/no-img-element
                     <img
                       src={member.user.avatar}
                       alt={member.user.name || member.user.email}

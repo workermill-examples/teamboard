@@ -151,6 +151,7 @@ export function AssigneePicker({ value, onChange, availableAssignees, disabled }
             <>
               <div className="w-4 h-4 rounded-full bg-primary-500 text-primary-50 text-xs font-medium flex items-center justify-center mr-2">
                 {value.avatar ? (
+                  // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={value.avatar}
                     alt={value.name}
@@ -199,6 +200,7 @@ export function AssigneePicker({ value, onChange, availableAssignees, disabled }
           >
             <div className="w-4 h-4 rounded-full bg-primary-500 text-primary-50 text-xs font-medium flex items-center justify-center mr-2">
               {assignee.avatar ? (
+                // eslint-disable-next-line @next/next/no-img-element
                 <img
                   src={assignee.avatar}
                   alt={assignee.name}

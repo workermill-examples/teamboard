@@ -7,7 +7,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { Card } from '@/components/ui/card'
 
 function MembersPageContent() {
-  const { workspace, loading, error } = useWorkspace()
+  const { workspace, loading, error, canManage } = useWorkspace()
 
   if (loading) {
     return <MembersSkeleton />
@@ -43,7 +43,7 @@ function MembersPageContent() {
         </h1>
         <p className="text-muted">
           Manage workspace members and their permissions.
-          {workspace.canManage && " You can invite new members and change roles."}
+          {canManage && " You can invite new members and change roles."}
         </p>
       </div>
 

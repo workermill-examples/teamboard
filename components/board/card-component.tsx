@@ -109,6 +109,7 @@ function AssigneeAvatar({ assignee }: AssigneeAvatarProps) {
       title={assignee.name}
     >
       {assignee.avatar ? (
+        // eslint-disable-next-line @next/next/no-img-element
         <img
           src={assignee.avatar}
           alt={assignee.name}

@@ -128,6 +128,7 @@ export function UserMenu({ variant }: UserMenuProps) {
         {/* Avatar */}
         <div className="w-8 h-8 rounded-full bg-primary-500 text-primary-50 flex items-center justify-center text-sm font-medium flex-shrink-0">
           {(user as any)?.avatar ? (
+            // eslint-disable-next-line @next/next/no-img-element
             <img
               src={(user as any).avatar}
               alt={user.name || ''}

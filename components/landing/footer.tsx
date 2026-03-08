@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { cn } from '@/lib/utils'
 
 export function LandingFooter() {
@@ -56,9 +57,9 @@ export function LandingFooter() {
                   </a>
                 </li>
                 <li>
-                  <a href="/login" className="text-secondary-400 hover:text-white transition-colors">
+                  <Link href="/login" className="text-secondary-400 hover:text-white transition-colors">
                     Demo
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>

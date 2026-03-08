@@ -1,12 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { withWorkspaceAccess, handleApiError } from '@/lib/rbac'
+import { requireWorkspaceAccess, handleApiError } from '@/lib/rbac'
 
 // PUT /api/workspaces/[slug]/labels/[id] - Update label (Member+ required)
-export const PUT = withWorkspaceAccess('MEMBER')(
-  async (request: NextRequest, context: { params: Promise<{ slug: string; id: string }> }, membership) => {
-    try {
-      const params = await context.params
+export async function PUT(
+  request: NextRequest,
+  context: { params: Promise<{ slug: string; id: string }> }
+) {
+  try {
+    const params = await context.params
+    const membership = await requireWorkspaceAccess(params.slug, 'MEMBER')
       const body = await request.json()
       const { name, color } = body
 
@@ -105,17 +108,19 @@ export const PUT = withWorkspaceAccess('MEMBER')(
       })
 
       return NextResponse.json(updatedLabel)
-    } catch (error) {
-      return handleApiError(error)
-    }
+  } catch (error) {
+    return handleApiError(error)
   }
-)
+}
 
 // DELETE /api/workspaces/[slug]/labels/[id] - Delete label (Member+ required)
-export const DELETE = withWorkspaceAccess('MEMBER')(
-  async (request: NextRequest, context: { params: Promise<{ slug: string; id: string }> }, membership) => {
-    try {
-      const params = await context.params
+export async function DELETE(
+  request: NextRequest,
+  context: { params: Promise<{ slug: string; id: string }> }
+) {
+  try {
+    const params = await context.params
+    const membership = await requireWorkspaceAccess(params.slug, 'MEMBER')
 
       // Find the label to delete
       const existingLabel = await prisma.label.findUnique({
@@ -181,8 +186,7 @@ export const DELETE = withWorkspaceAccess('MEMBER')(
         message: 'Label deleted successfully',
         cardCount,
       })
-    } catch (error) {
-      return handleApiError(error)
-    }
+  } catch (error) {
+    return handleApiError(error)
   }
-)
+}

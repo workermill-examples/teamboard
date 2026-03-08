@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState, useRef } from 'react'
-import { motion, useMotionValue, useTransform, animate, AnimationOptions } from 'framer-motion'
+import { motion, useMotionValue, useTransform, animate as animateValue, AnimationOptions } from 'framer-motion'
 
 export interface AnimatedCounterProps {
   /** Target value to animate to */
@@ -94,17 +94,17 @@ export function AnimatedCounter({
     setIsAnimating(true)
 
     const timer = setTimeout(() => {
-      const controls = animate(motionValue, value, {
+      const controls = animateValue(startValue, value, {
         duration: duration / 1000,
         ease: easing,
-        from: startValue,
+        onUpdate: (latest) => motionValue.set(latest),
         onComplete: () => {
           setIsAnimating(false)
           onAnimationComplete?.()
         }
       })
 
-      return controls.stop
+      return () => controls.stop()
     }, delay)
 
     return () => clearTimeout(timer)

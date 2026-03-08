@@ -251,7 +251,6 @@ class OfflineQueue {
   private requestBackgroundSync(): void {
     if ('serviceWorker' in navigator && 'sync' in window.ServiceWorkerRegistration.prototype) {
       navigator.serviceWorker.ready.then(registration => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         return (registration as any).sync?.register('offline-card-moves');
       }).catch(error => {
         console.error('Background sync registration failed:', error);

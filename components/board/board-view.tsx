@@ -338,7 +338,7 @@ export function BoardView({ workspaceSlug, boardId, onCardClick, className }: Bo
                   </div>
                   <h3 className="text-lg font-semibold text-foreground mb-2">No columns yet</h3>
                   <p className="text-muted-600 mb-4">
-                    This board doesn't have any columns. Create your first column to get started.
+                    This board doesn&apos;t have any columns. Create your first column to get started.
                   </p>
                 </div>
               </div>

@@ -21,7 +21,7 @@ export function Hero() {
             <div className="lg:col-span-7">
               <h1 className="text-4xl font-bold tracking-tight text-secondary-900 sm:text-5xl lg:text-6xl">
                 <span className="block">Streamline your</span>
-                <span className="block text-primary-600">team's workflow</span>
+                <span className="block text-primary-600">team&apos;s workflow</span>
               </h1>
 
               <p className="mt-6 text-xl text-secondary-600 max-w-3xl">
