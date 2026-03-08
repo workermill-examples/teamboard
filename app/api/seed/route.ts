@@ -419,7 +419,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Create activities (25 activities as specified)
-    const activityTypes = [
+    const activityTypes: Array<'CARD_CREATED' | 'CARD_UPDATED' | 'CARD_MOVED' | 'COMMENT_ADDED' | 'MEMBER_ADDED' | 'BOARD_CREATED'> = [
       'CARD_CREATED',
       'CARD_UPDATED',
       'CARD_MOVED',
@@ -429,7 +429,7 @@ export async function POST(request: NextRequest) {
     ]
 
     for (let i = 0; i < 25; i++) {
-      const activityType = activityTypes[i % activityTypes.length] as any
+      const activityType = activityTypes[i % activityTypes.length]
       const user = allUsers[i % allUsers.length]
       const card = i < allCards.length ? allCards[i] : allCards[i % allCards.length]
 
