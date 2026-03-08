@@ -12,9 +12,23 @@ const compat = new FlatCompat({
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals"),
   {
+    files: ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx"],
+    languageOptions: {
+      ecmaVersion: "latest",
+      sourceType: "module",
+    },
     rules: {
       // Add custom rules as needed
     },
+  },
+  {
+    ignores: [
+      ".next/**",
+      "node_modules/**",
+      "out/**",
+      ".vercel/**",
+      "*.tsbuildinfo"
+    ],
   },
 ];
 

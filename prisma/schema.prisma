@@ -1,0 +1,279 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_DATABASE_URL")
+}
+
+// NextAuth models
+model Account {
+  id                String  @id @default(cuid())
+  userId            String  @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique @map("session_token")
+  userId       String   @map("user_id")
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verificationtokens")
+}
+
+// Core application models
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  password      String?
+  avatar        String?
+  emailVerified DateTime? @map("email_verified")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  // NextAuth relations
+  accounts Account[]
+  sessions Session[]
+
+  // Application relations
+  workspaceMembers WorkspaceMember[]
+  createdWorkspaces Workspace[]      @relation("WorkspaceCreator")
+  assignedCards     Card[]           @relation("CardAssignee")
+  comments          Comment[]
+  activities        Activity[]
+  starredBoards     BoardStar[]
+
+  @@map("users")
+}
+
+enum WorkspaceRole {
+  OWNER
+  ADMIN
+  MEMBER
+  VIEWER
+}
+
+model Workspace {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String?
+  avatar      String?
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  creatorId   String   @map("creator_id")
+
+  creator User                @relation("WorkspaceCreator", fields: [creatorId], references: [id])
+  members WorkspaceMember[]
+  boards  Board[]
+  labels  Label[]
+  activities Activity[]
+
+  @@map("workspaces")
+}
+
+model WorkspaceMember {
+  id          String        @id @default(cuid())
+  userId      String        @map("user_id")
+  workspaceId String        @map("workspace_id")
+  role        WorkspaceRole
+  joinedAt    DateTime      @default(now()) @map("joined_at")
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, workspaceId])
+  @@map("workspace_members")
+}
+
+model Board {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  workspaceId String   @map("workspace_id")
+  position    Int      @default(0)
+  isArchived  Boolean  @default(false) @map("is_archived")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  workspace Workspace   @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  columns   Column[]
+  stars     BoardStar[]
+  activities Activity[]
+
+  @@map("boards")
+}
+
+model BoardStar {
+  id      String @id @default(cuid())
+  userId  String @map("user_id")
+  boardId String @map("board_id")
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  board Board @relation(fields: [boardId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, boardId])
+  @@map("board_stars")
+}
+
+model Column {
+  id        String   @id @default(cuid())
+  title     String
+  position  Int
+  boardId   String   @map("board_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  board Board @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  cards Card[]
+
+  @@map("columns")
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+model Card {
+  id          String    @id @default(cuid())
+  title       String
+  description String?
+  position    Int
+  columnId    String    @map("column_id")
+  assigneeId  String?   @map("assignee_id")
+  priority    Priority?
+  dueDate     DateTime? @map("due_date")
+  coverColor  String?   @map("cover_color")
+  isArchived  Boolean   @default(false) @map("is_archived")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  column    Column        @relation(fields: [columnId], references: [id], onDelete: Cascade)
+  assignee  User?         @relation("CardAssignee", fields: [assigneeId], references: [id])
+  labels    CardLabel[]
+  comments  Comment[]
+  checklist ChecklistItem[]
+  activities Activity[]
+
+  @@map("cards")
+}
+
+model Label {
+  id          String @id @default(cuid())
+  name        String
+  color       String
+  workspaceId String @map("workspace_id")
+
+  workspace Workspace   @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  cards     CardLabel[]
+
+  @@map("labels")
+}
+
+model CardLabel {
+  id      String @id @default(cuid())
+  cardId  String @map("card_id")
+  labelId String @map("label_id")
+
+  card  Card  @relation(fields: [cardId], references: [id], onDelete: Cascade)
+  label Label @relation(fields: [labelId], references: [id], onDelete: Cascade)
+
+  @@unique([cardId, labelId])
+  @@map("card_labels")
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  content   String
+  cardId    String   @map("card_id")
+  authorId  String   @map("author_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  card   Card @relation(fields: [cardId], references: [id], onDelete: Cascade)
+  author User @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@map("comments")
+}
+
+model ChecklistItem {
+  id        String   @id @default(cuid())
+  text      String
+  completed Boolean  @default(false)
+  position  Int
+  cardId    String   @map("card_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  card Card @relation(fields: [cardId], references: [id], onDelete: Cascade)
+
+  @@map("checklist_items")
+}
+
+enum ActivityType {
+  CARD_CREATED
+  CARD_UPDATED
+  CARD_MOVED
+  CARD_ARCHIVED
+  CARD_DELETED
+  COMMENT_ADDED
+  MEMBER_ADDED
+  MEMBER_REMOVED
+  BOARD_CREATED
+  BOARD_UPDATED
+  BOARD_ARCHIVED
+}
+
+model Activity {
+  id          String       @id @default(cuid())
+  type        ActivityType
+  description String
+  userId      String       @map("user_id")
+  workspaceId String       @map("workspace_id")
+  boardId     String?      @map("board_id")
+  cardId      String?      @map("card_id")
+  metadata    Json?
+  createdAt   DateTime     @default(now()) @map("created_at")
+
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  workspace Workspace  @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  board     Board?     @relation(fields: [boardId], references: [id], onDelete: SetNull)
+  card      Card?      @relation(fields: [cardId], references: [id], onDelete: SetNull)
+
+  @@map("activities")
+}
