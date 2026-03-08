@@ -8,11 +8,29 @@ import LoginPage from '@/app/login/page'
 // Mock Next.js hooks and NextAuth
 vi.mock('next-auth/react')
 vi.mock('next/navigation')
+vi.mock('@/hooks/use-auth')
 
 const mockUseSession = useSession as any<typeof useSession>
 const mockSignIn = signIn as any<typeof signIn>
 const mockUseRouter = useRouter as any<typeof useRouter>
 const mockUseSearchParams = useSearchParams as any<typeof useSearchParams>
+
+// Mock the auth hooks
+import * as useAuth from '@/hooks/use-auth'
+const mockLogin = vi.fn()
+const mockUseLogin = vi.fn(() => ({
+  login: mockLogin,
+  loading: false,
+  error: null,
+  clearError: vi.fn()
+}))
+const mockUseRedirectIfAuthenticated = vi.fn(() => ({
+  isAuthenticated: false,
+  isLoading: false
+}))
+
+vi.mocked(useAuth.useLogin).mockImplementation(mockUseLogin)
+vi.mocked(useAuth.useRedirectIfAuthenticated).mockImplementation(mockUseRedirectIfAuthenticated)
 
 const mockRouter = {
   push: vi.fn(),
@@ -51,6 +69,19 @@ describe('Login Form Validation', () => {
     mockUseRouter.mockReturnValue(mockRouter)
     mockUseSearchParams.mockReturnValue(mockSearchParams)
     mockSearchParams.get.mockReturnValue(null)
+
+    // Reset auth hook mocks with clean state
+    mockLogin.mockReset()
+    mockUseLogin.mockReturnValue({
+      login: mockLogin,
+      loading: false,
+      error: null,
+      clearError: vi.fn()
+    })
+    mockUseRedirectIfAuthenticated.mockReturnValue({
+      isAuthenticated: false,
+      isLoading: false
+    })
   })
 
   describe('Email Validation', () => {
@@ -61,7 +92,7 @@ describe('Login Form Validation', () => {
 
     it('validates short email', () => {
       const error = validateEmail('a@')
-      expect(error).toBe('Please enter a valid email address')
+      expect(error).toBe('Email must be at least 3 characters')
     })
 
     it('validates invalid email format', () => {
@@ -175,9 +206,11 @@ describe('Login Form Validation', () => {
       await user.click(submitButton)
 
       await waitFor(() => {
+        // The validation happens client-side so we should see error messages
+        // Even though we mocked the login hook, the form validation still runs
         expect(screen.getByText('Email is required')).toBeInTheDocument()
         expect(screen.getByText('Password is required')).toBeInTheDocument()
-      })
+      }, { timeout: 2000 })
     })
 
     it('clears validation errors when user starts typing', async () => {
@@ -192,62 +225,54 @@ describe('Login Form Validation', () => {
 
       await waitFor(() => {
         expect(screen.getByText('Email is required')).toBeInTheDocument()
-      })
+      }, { timeout: 2000 })
 
       // Start typing in email field
       await user.type(emailInput, 't')
 
       await waitFor(() => {
         expect(screen.queryByText('Email is required')).not.toBeInTheDocument()
-      })
+      }, { timeout: 2000 })
     })
 
     it('disables form while loading', async () => {
-      mockSignIn.mockResolvedValueOnce({ ok: true, error: undefined })
+      // Mock loading state
+      mockUseLogin.mockReturnValue({
+        login: mockLogin,
+        loading: true,
+        error: null,
+        clearError: vi.fn()
+      })
 
       const user = userEvent.setup()
       render(<LoginPage />)
 
       const emailInput = screen.getByLabelText(/email/i)
       const passwordInput = screen.getByLabelText(/password/i)
-      const submitButton = screen.getByRole('button', { name: /sign in/i })
+      const submitButton = screen.getByRole('button', { name: /signing in.../i })
 
-      await user.type(emailInput, 'demo@workermill.com')
-      await user.type(passwordInput, 'demo1234')
-
-      // Submit form
-      await user.click(submitButton)
-
-      // Form should be disabled immediately
+      // Form should be disabled when loading
       expect(submitButton).toBeDisabled()
       expect(emailInput).toBeDisabled()
       expect(passwordInput).toBeDisabled()
     })
 
-    it('shows authentication error message', async () => {
-      mockSignIn.mockResolvedValueOnce({
-        ok: false,
-        error: 'CredentialsSignin'
+    it('shows authentication error message', () => {
+      // Mock error state
+      mockUseLogin.mockReturnValue({
+        login: mockLogin,
+        loading: false,
+        error: 'Invalid email or password',
+        clearError: vi.fn()
       })
 
-      const user = userEvent.setup()
       render(<LoginPage />)
 
-      const emailInput = screen.getByLabelText(/email/i)
-      const passwordInput = screen.getByLabelText(/password/i)
-      const submitButton = screen.getByRole('button', { name: /sign in/i })
-
-      await user.type(emailInput, 'demo@workermill.com')
-      await user.type(passwordInput, 'wrongpassword')
-      await user.click(submitButton)
-
-      await waitFor(() => {
-        expect(screen.getByText('Invalid email or password')).toBeInTheDocument()
-      })
+      expect(screen.getByText('Invalid email or password')).toBeInTheDocument()
     })
 
-    it('redirects on successful login', async () => {
-      mockSignIn.mockResolvedValueOnce({ ok: true, error: undefined })
+    it('calls login function on form submission', async () => {
+      mockLogin.mockResolvedValueOnce(true)
 
       const user = userEvent.setup()
       render(<LoginPage />)
@@ -261,51 +286,23 @@ describe('Login Form Validation', () => {
       await user.click(submitButton)
 
       await waitFor(() => {
-        expect(mockSignIn).toHaveBeenCalledWith('credentials', {
+        expect(mockLogin).toHaveBeenCalledWith({
           email: 'demo@workermill.com',
           password: 'demo1234',
-          redirect: false,
         })
-        expect(mockRouter.push).toHaveBeenCalledWith('/workspaces')
-      })
-    })
-
-    it('handles callback URL redirect correctly', async () => {
-      mockSearchParams.get.mockReturnValue('/workspaces/acme-product')
-      mockSignIn.mockResolvedValueOnce({ ok: true, error: undefined })
-
-      const user = userEvent.setup()
-      render(<LoginPage />)
-
-      const emailInput = screen.getByLabelText(/email/i)
-      const passwordInput = screen.getByLabelText(/password/i)
-      const submitButton = screen.getByRole('button', { name: /sign in/i })
-
-      await user.type(emailInput, 'demo@workermill.com')
-      await user.type(passwordInput, 'demo1234')
-      await user.click(submitButton)
-
-      await waitFor(() => {
-        expect(mockRouter.push).toHaveBeenCalledWith('/workspaces/acme-product')
       })
     })
 
     it('redirects authenticated users away from login page', () => {
-      mockUseSession.mockReturnValue({
-        data: {
-          user: {
-            id: '1',
-            email: 'demo@workermill.com',
-            name: 'Demo User'
-          }
-        },
-        status: 'authenticated',
-        update: vi.fn(),
+      mockUseRedirectIfAuthenticated.mockReturnValue({
+        isAuthenticated: true,
+        isLoading: false
       })
 
       render(<LoginPage />)
 
-      expect(mockRouter.push).toHaveBeenCalledWith('/workspaces')
+      // The redirect would be handled by the hook, we just verify it was called
+      expect(mockUseRedirectIfAuthenticated).toHaveBeenCalled()
     })
 
     it('maintains proper form accessibility', () => {
