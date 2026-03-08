@@ -42,13 +42,14 @@ export function Sidebar({ variant }: SidebarProps) {
     return (
       <>
         {/* Mobile Header */}
-        <div className="lg:hidden flex items-center gap-3 p-4 border-b border-border bg-card">
+        <div className="lg:hidden flex items-center gap-3 p-4 border-b border-border bg-card" data-testid="mobile-header">
           <Button
             variant="ghost"
             size="sm"
             onClick={() => setMobileOpen(true)}
             className="p-2"
             aria-label="Open sidebar"
+            data-testid="mobile-menu-button"
           >
             <MenuIcon className="w-5 h-5" />
           </Button>
@@ -71,6 +72,7 @@ export function Sidebar({ variant }: SidebarProps) {
             className="lg:hidden fixed inset-0 z-50 bg-black bg-opacity-50"
             onClick={() => setMobileOpen(false)}
             aria-hidden="true"
+            data-testid="sidebar-overlay"
           />
         )}
 
@@ -80,6 +82,7 @@ export function Sidebar({ variant }: SidebarProps) {
             'lg:hidden fixed inset-y-0 left-0 z-50 w-64 bg-card border-r border-border transform transition-transform duration-300 ease-in-out',
             mobileOpen ? 'translate-x-0' : '-translate-x-full'
           )}
+          data-testid="sidebar-mobile"
         >
           <SidebarContent variant="mobile" onClose={() => setMobileOpen(false)} />
         </div>
@@ -89,7 +92,7 @@ export function Sidebar({ variant }: SidebarProps) {
 
   // Desktop variant
   return (
-    <div className="flex flex-col flex-1 bg-card border-r border-border">
+    <div className="flex flex-col flex-1 bg-card border-r border-border" data-testid="sidebar-desktop">
       <SidebarContent variant="desktop" />
     </div>
   )
