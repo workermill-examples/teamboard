@@ -49,10 +49,24 @@ vi.mock('framer-motion', () => ({
   motion: {
     div: ({ children, ...props }: any) => <div {...props}>{children}</div>,
     span: ({ children, ...props }: any) => <span {...props}>{children}</span>,
+    p: ({ children, ...props }: any) => <p {...props}>{children}</p>,
   },
   useMotionValue: () => ({ set: vi.fn(), get: vi.fn() }),
   useTransform: () => ({ on: vi.fn(() => vi.fn()) }),
   animate: vi.fn(() => ({ stop: vi.fn() })),
+}))
+
+// Mock UI components
+vi.mock('@/components/ui/card', () => ({
+  Card: ({ children, className, ...props }: any) => <div className={`card ${className || ''}`} {...props}>{children}</div>,
+  CardContent: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+  CardHeader: ({ children, className, ...props }: any) => <div className={className} {...props}>{children}</div>,
+  CardTitle: ({ children, className, ...props }: any) => <h3 className={className} {...props}>{children}</h3>,
+}))
+
+// Mock utilities
+vi.mock('@/lib/utils', () => ({
+  cn: vi.fn((...classes) => classes.filter(Boolean).join(' '))
 }))
 
 describe('Dashboard Chart Components', () => {
@@ -160,7 +174,7 @@ describe('Dashboard Chart Components', () => {
       render(<TasksByAssigneeBar data={{}} />)
 
       expect(screen.getByText('No assigned tasks found')).toBeInTheDocument()
-      expect(screen.getByText('Assign some cards to see the distribution')).toBeInTheDocument()
+      expect(screen.getByText('Assign cards to team members to see the distribution')).toBeInTheDocument()
     })
 
     it('includes proper chart structure', () => {

@@ -57,7 +57,7 @@ export function Sidebar({ variant }: SidebarProps) {
             <Skeleton className="h-6 w-32" />
           ) : workspace ? (
             <div className="flex items-center gap-2">
-              <h1 className="font-semibold text-foreground">{workspace.name}</h1>
+              <h2 className="font-semibold text-foreground">{workspace.name}</h2>
               <ChevronDownIcon className="w-4 h-4 text-muted-600" />
             </div>
           ) : (

