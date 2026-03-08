@@ -19,7 +19,7 @@ test.describe('PWA Features', () => {
       const manifest = await response.json()
 
       // Validate required manifest properties
-      expect(manifest.name).toBe('TeamBoard')
+      expect(manifest.name).toBe('TeamBoard - Collaborative Project Management')
       expect(manifest.short_name).toBeTruthy()
       expect(manifest.start_url).toBeTruthy()
       expect(manifest.display).toBe('standalone')

@@ -91,6 +91,7 @@ export function NavLinks({ workspace, variant }: NavLinksProps) {
                 ? 'bg-primary-50 text-primary-700 border-l-2 border-primary-500'
                 : 'text-muted-700 hover:bg-muted-100 hover:text-foreground'
             )}
+            data-testid={`nav-${item.name.toLowerCase()}`}
           >
             <item.icon className="w-5 h-5 flex-shrink-0" />
             <span>{item.name}</span>
