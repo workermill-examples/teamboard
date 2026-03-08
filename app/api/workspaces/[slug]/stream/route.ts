@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '../../../../lib/prisma'
-import { requireWorkspaceAccess, handleApiError } from '../../../../lib/rbac'
+import { prisma } from '@/lib/prisma'
+import { requireWorkspaceAccess, handleApiError } from '@/lib/rbac'
 
 // GET /api/workspaces/[slug]/stream - SSE stream for real-time workspace updates
 export async function GET(request: NextRequest, context: { params: Promise<{ slug: string }> }) {

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '../../../../lib/prisma'
-import { withWorkspaceAccess, handleApiError } from '../../../../lib/rbac'
+import { prisma } from '@/lib/prisma'
+import { withWorkspaceAccess, handleApiError } from '@/lib/rbac'
 
 // GET /api/workspaces/[slug]/stats - Get workspace statistics
 export const GET = withWorkspaceAccess('VIEWER')(
