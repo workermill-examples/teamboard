@@ -221,6 +221,7 @@ function WorkspaceListContent() {
                 key={workspace.id}
                 className="cursor-pointer transition-all duration-200 hover:shadow-lg hover:-translate-y-1 border-border"
                 onClick={() => handleWorkspaceClick(workspace.slug)}
+                data-testid="workspace-card"
               >
                 <CardHeader>
                   <div className="flex items-start justify-between">
@@ -283,6 +284,7 @@ function WorkspaceListContent() {
                       onChange={(e) => setNewWorkspace(prev => ({ ...prev, name: e.target.value }))}
                       disabled={createLoading}
                       required
+                      data-testid="workspace-name-input"
                     />
                   </div>
 
@@ -310,6 +312,7 @@ function WorkspaceListContent() {
                       value={newWorkspace.description}
                       onChange={(e) => setNewWorkspace(prev => ({ ...prev, description: e.target.value }))}
                       disabled={createLoading}
+                      data-testid="workspace-description-input"
                     />
                   </div>
 
@@ -331,6 +334,7 @@ function WorkspaceListContent() {
                       type="submit"
                       className="flex-1"
                       disabled={createLoading || !newWorkspace.name.trim()}
+                      data-testid="create-workspace-submit"
                     >
                       {createLoading ? 'Creating...' : 'Create Workspace'}
                     </Button>
