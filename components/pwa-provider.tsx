@@ -119,6 +119,7 @@ export function PWAProvider({ children }: PWAProviderProps) {
           className="fixed top-0 left-0 right-0 z-50 bg-yellow-500 text-white text-center py-2 text-sm font-medium"
           role="banner"
           aria-live="polite"
+          data-testid="offline-indicator"
         >
           📱 You&apos;re offline. Your changes will sync when reconnected.
         </div>
@@ -130,6 +131,7 @@ export function PWAProvider({ children }: PWAProviderProps) {
           className="fixed top-0 left-0 right-0 z-50 bg-blue-500 text-white text-center py-2 text-sm font-medium"
           role="banner"
           aria-live="polite"
+          data-testid="sync-queue"
         >
           🔄 Syncing offline changes...
         </div>

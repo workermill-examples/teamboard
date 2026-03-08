@@ -54,7 +54,7 @@ function MobileNavContent({ className = '' }: MobileNavProps) {
   return (
     <nav
       className={`fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 lg:hidden ${className}`}
-      data-testid="mobile-nav"
+      data-testid="bottom-nav"
     >
       <div className="px-2 py-1">
         <div className="flex justify-around">
@@ -70,7 +70,7 @@ function MobileNavContent({ className = '' }: MobileNavProps) {
                     : 'text-muted hover:text-foreground hover:bg-accent/50'
                   }
                 `}
-                data-testid={`mobile-nav-${item.name.toLowerCase()}`}
+                data-testid={`bottom-nav-${item.name.toLowerCase()}`}
               >
                 <span className="text-lg mb-1" aria-hidden="true">{item.icon}</span>
                 <span className="truncate">{item.name}</span>
