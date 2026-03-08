@@ -86,6 +86,7 @@ export function PriorityPicker({ value, onChange, disabled }: PriorityPickerProp
           size="sm"
           disabled={disabled}
           className="justify-start h-8 px-3"
+          data-testid="priority-select"
         >
           <div className={cn('w-2 h-2 rounded-full mr-2', currentPriority?.color)} />
           {currentPriority?.label}
@@ -107,6 +108,7 @@ export function PriorityPicker({ value, onChange, disabled }: PriorityPickerProp
               'w-full flex items-center px-3 py-2 text-sm rounded-md hover:bg-secondary-100 transition-colors',
               value === priority.value && 'bg-secondary-100'
             )}
+            data-testid={`priority-${priority.value.toLowerCase()}`}
           >
             <div className={cn('w-2 h-2 rounded-full mr-2', priority.color)} />
             {priority.label}
@@ -258,6 +260,7 @@ export function DueDatePicker({ value, onChange, disabled }: DueDatePickerProps)
           size="sm"
           disabled={disabled}
           className="justify-start h-8 px-3"
+          data-testid="due-date-picker"
         >
           <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -283,6 +286,7 @@ export function DueDatePicker({ value, onChange, disabled }: DueDatePickerProps)
                 key={option.label}
                 onClick={() => handleQuickOption(option.value)}
                 className="w-full text-left px-2 py-1 text-sm rounded hover:bg-secondary-100 transition-colors"
+                data-testid={`date-${option.label.toLowerCase()}`}
               >
                 {option.label}
               </button>
@@ -333,6 +337,7 @@ export function LabelPicker({ selectedLabels, availableLabels, onChange, disable
           size="sm"
           disabled={disabled}
           className="justify-start h-8 px-3"
+          data-testid="add-label"
         >
           <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
@@ -355,6 +360,7 @@ export function LabelPicker({ selectedLabels, availableLabels, onChange, disable
                 'w-full flex items-center px-3 py-2 text-sm rounded-md hover:bg-secondary-100 transition-colors',
                 isSelected && 'bg-secondary-100'
               )}
+              data-testid={`label-${label.name.toLowerCase()}`}
             >
               <div
                 className="w-4 h-4 rounded mr-2"

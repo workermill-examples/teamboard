@@ -1,6 +1,11 @@
-import React, { Suspense } from 'react'
+'use client'
+
+import React, { Suspense, useState } from 'react'
+import { use } from 'react'
 import { BoardView } from '@/components/board/board-view'
+import { CardDetail } from '@/components/board/card-detail'
 import { Skeleton } from '@/components/ui/skeleton'
+import { useWorkspace } from '@/hooks/use-workspace'
 
 interface BoardPageProps {
   params: Promise<{
@@ -26,10 +31,25 @@ function BoardPageSkeleton() {
   )
 }
 
-async function BoardPageContent({ workspaceSlug, boardId }: { workspaceSlug: string; boardId: string }) {
+function BoardPageContent({ workspaceSlug, boardId }: { workspaceSlug: string; boardId: string }) {
+  const { workspace } = useWorkspace()
+  const [selectedCardId, setSelectedCardId] = useState<string | null>(null)
+
   const handleCardClick = (card: any) => {
-    // TODO: Open card detail modal/drawer
-    console.log('Card clicked:', card)
+    setSelectedCardId(card.id)
+  }
+
+  const handleCloseCardDetail = () => {
+    setSelectedCardId(null)
+  }
+
+  const handleCardUpdated = () => {
+    // Card was updated, possibly refetch board data
+  }
+
+  const handleCardDeleted = () => {
+    setSelectedCardId(null)
+    // Card was deleted, possibly refetch board data
   }
 
   return (
@@ -41,12 +61,28 @@ async function BoardPageContent({ workspaceSlug, boardId }: { workspaceSlug: str
         onCardClick={handleCardClick}
         className="h-full"
       />
+
+      {/* Card Detail Modal */}
+      <CardDetail
+        cardId={selectedCardId}
+        isOpen={!!selectedCardId}
+        onClose={handleCloseCardDetail}
+        availableAssignees={workspace?.members?.map(member => ({
+          id: member.user.id,
+          name: member.user.name,
+          email: member.user.email,
+          avatar: member.user.avatar
+        })) || []}
+        availableLabels={[]}
+        onCardUpdated={handleCardUpdated}
+        onCardDeleted={handleCardDeleted}
+      />
     </div>
   )
 }
 
-export default async function BoardPage({ params }: BoardPageProps) {
-  const { workspace, id } = await params
+function BoardPageWrapper({ params }: BoardPageProps) {
+  const { workspace, id } = use(params)
 
   return (
     <main className="h-full overflow-hidden">
@@ -55,4 +91,8 @@ export default async function BoardPage({ params }: BoardPageProps) {
       </Suspense>
     </main>
   )
+}
+
+export default function BoardPage({ params }: BoardPageProps) {
+  return <BoardPageWrapper params={params} />
 }

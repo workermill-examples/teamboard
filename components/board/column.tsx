@@ -40,7 +40,7 @@ function ColumnHeader({
 
         {/* Title and count */}
         <div className="flex items-center space-x-2">
-          <h3 className="font-semibold text-foreground">{title}</h3>
+          <h3 className="font-semibold text-foreground" data-testid="column-title">{title}</h3>
           <span
             className={cn(
               'px-2 py-1 rounded-full text-xs font-medium',
@@ -48,6 +48,7 @@ function ColumnHeader({
               isWipLimitWarning && !isWipLimitExceeded && 'bg-warning-100 text-warning-700',
               !isWipLimitWarning && 'bg-muted-100 text-muted-600'
             )}
+            data-testid="column-count"
           >
             {cardCount}
             {wipLimit && ` / ${wipLimit}`}
@@ -62,6 +63,7 @@ function ColumnHeader({
           size="sm"
           onClick={onAddCard}
           className="h-8 w-8 p-0 hover:bg-muted-100"
+          data-testid="add-card-button"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -108,6 +110,7 @@ export function Column({
         isOver && 'ring-2 ring-primary-500 ring-opacity-50',
         isDragOverlay && 'opacity-90 shadow-xl'
       )}
+      data-testid="column"
     >
       <ColumnHeader
         title={column.title}
@@ -136,6 +139,7 @@ export function Column({
                   size="sm"
                   onClick={onAddCard}
                   className="text-xs"
+                  data-testid="add-card-button"
                 >
                   Add your first card
                 </Button>
@@ -157,6 +161,7 @@ export function Column({
                   variant="ghost"
                   onClick={onAddCard}
                   className="w-full mt-2 h-8 text-xs text-muted-600 hover:text-foreground border-2 border-dashed border-muted-200 hover:border-muted-300"
+                  data-testid="add-card-button"
                 >
                   <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
