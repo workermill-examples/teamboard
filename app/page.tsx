@@ -1,14 +1,19 @@
+import { LandingNav } from '@/components/landing/nav'
+import { Hero } from '@/components/landing/hero'
+import { Features } from '@/components/landing/features'
+import { HowItWorks } from '@/components/landing/how-it-works'
+import { LandingFooter } from '@/components/landing/footer'
+
 export default function HomePage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-secondary-50">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold text-secondary-900 mb-4">
-          TeamBoard
-        </h1>
-        <p className="text-lg text-secondary-600">
-          Foundation app shell - Ready for implementation
-        </p>
-      </div>
+    <div className="min-h-screen">
+      <LandingNav />
+      <main>
+        <Hero />
+        <Features />
+        <HowItWorks />
+      </main>
+      <LandingFooter />
     </div>
   )
 }
