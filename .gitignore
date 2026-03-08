@@ -1,0 +1,12 @@
+
+node_modules
+.workermill-message.md
+.workermill-response.md
+.workermill-answer.md
+.next
+dist
+build
+out
+.nuxt
+.output
+.svelte-kit
