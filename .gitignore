@@ -10,6 +10,7 @@ out
 .nuxt
 .output
 .svelte-kit
+tsconfig.tsbuildinfo
 
 # Environment variables
 .env
