@@ -19,9 +19,9 @@ vi.mock('@/lib/utils', () => ({
     const minutes = Math.floor(diff / 60000)
     if (minutes < 60) return `${minutes} minutes ago`
     const hours = Math.floor(minutes / 60)
-    if (hours < 24) return `${hours} hours ago`
+    if (hours < 24) return `${hours} hour${hours !== 1 ? 's' : ''} ago`
     const days = Math.floor(hours / 24)
-    return `${days} days ago`
+    return `${days} day${days !== 1 ? 's' : ''} ago`
   }),
   cn: vi.fn((...classes) => classes.filter(Boolean).join(' '))
 }))
@@ -99,7 +99,7 @@ describe('ActivityItem Component', () => {
 
       render(<ActivityItem activity={activity} />)
 
-      expect(screen.getByText('1 hours ago')).toBeInTheDocument()
+      expect(screen.getByText('1 hour ago')).toBeInTheDocument()
     })
   })
 

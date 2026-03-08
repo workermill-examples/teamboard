@@ -141,7 +141,7 @@ describe('Sidebar Navigation', () => {
     it('renders mobile header with workspace name', () => {
       render(<Sidebar variant="mobile" />)
 
-      expect(screen.getByText('Acme Product')).toBeInTheDocument()
+      expect(screen.getByRole('heading', { level: 1, name: 'Acme Product' })).toBeInTheDocument()
       expect(screen.getByLabelText('Open sidebar')).toBeInTheDocument()
     })
 
@@ -158,8 +158,11 @@ describe('Sidebar Navigation', () => {
       const closeButton = screen.getByLabelText('Close sidebar')
       await user.click(closeButton)
 
-      // Sidebar should close
-      expect(screen.queryByLabelText('Close sidebar')).not.toBeInTheDocument()
+      // Sidebar should close - check the panel is transformed off-screen
+      await waitFor(() => {
+        const sidebarPanel = document.querySelector('.lg\\:hidden.fixed.inset-y-0.left-0')
+        expect(sidebarPanel).toHaveClass('-translate-x-full')
+      })
     })
 
     it('closes sidebar with escape key', async () => {
@@ -175,8 +178,10 @@ describe('Sidebar Navigation', () => {
       // Press escape key
       fireEvent.keyDown(document, { key: 'Escape', code: 'Escape' })
 
+      // Sidebar should close - check the panel is transformed off-screen
       await waitFor(() => {
-        expect(screen.queryByLabelText('Close sidebar')).not.toBeInTheDocument()
+        const sidebarPanel = document.querySelector('.lg\\:hidden.fixed.inset-y-0.left-0')
+        expect(sidebarPanel).toHaveClass('-translate-x-full')
       })
     })
   })
@@ -350,7 +355,7 @@ describe('Sidebar Navigation', () => {
       render(<NavLinks workspace={mockWorkspace} variant="desktop" />)
 
       expect(screen.getByLabelText('Unstar board')).toBeInTheDocument() // starred board
-      expect(screen.getByLabelText('Star board')).toBeInTheDocument() // unstarred board
+      expect(screen.getAllByLabelText('Star board')).toHaveLength(2) // unstarred boards
     })
   })
 })

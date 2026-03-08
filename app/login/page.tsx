@@ -16,12 +16,15 @@ function LoginForm() {
     password: '',
   })
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
+  const [hasInteracted, setHasInteracted] = useState(false)
 
-  // Clear errors when user starts typing
+  // Clear errors when user starts typing (but not on initial render)
   useEffect(() => {
-    if (error) clearError()
-    setFieldErrors({})
-  }, [formData, error, clearError])
+    if (hasInteracted) {
+      if (error) clearError()
+      setFieldErrors({})
+    }
+  }, [formData, error, clearError, hasInteracted])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -46,6 +49,7 @@ function LoginForm() {
   const handleChange = (field: keyof LoginFormData) => (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
+    setHasInteracted(true)
     setFormData(prev => ({
       ...prev,
       [field]: e.target.value

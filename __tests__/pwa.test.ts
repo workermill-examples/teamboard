@@ -55,6 +55,7 @@ Object.defineProperty(window, 'ServiceWorkerRegistration', {
 describe('PWA Offline Queue', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.resetModules();
   });
 
   it('should queue card moves when offline', async () => {
@@ -62,7 +63,7 @@ describe('PWA Offline Queue', () => {
     Object.defineProperty(navigator, 'onLine', { value: false, writable: true });
 
     // Mock the offline queue module
-    vi.mock('@/lib/offline-queue', () => ({
+    vi.doMock('@/lib/offline-queue', () => ({
       useOfflineQueue: () => ({
         queueCardMove: vi.fn(() => Promise.resolve({ success: true, queued: true }))
       })
@@ -77,10 +78,10 @@ describe('PWA Offline Queue', () => {
   });
 
   it('should make API call when online', async () => {
-    // Mock online state
-    Object.defineProperty(navigator, 'onLine', { value: true, writable: true });
+    // Mock online state FIRST
+    Object.defineProperty(navigator, 'onLine', { value: true, writable: true, configurable: true });
 
-    // Mock successful API response
+    // Mock successful API response BEFORE importing the module
     global.fetch = vi.fn(() =>
       Promise.resolve({
         ok: true,
@@ -88,6 +89,10 @@ describe('PWA Offline Queue', () => {
       })
     ) as any;
 
+    // Clear module cache to ensure clean import
+    vi.resetModules();
+
+    // Now import the module
     const { useOfflineQueue } = await import('@/lib/offline-queue');
     const { queueCardMove } = useOfflineQueue();
 
