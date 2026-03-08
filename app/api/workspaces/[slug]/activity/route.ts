@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '../../../../lib/prisma'
-import { withWorkspaceAccess, handleApiError } from '../../../../lib/rbac'
+import { prisma } from '@/lib/prisma'
+import { withWorkspaceAccess, handleApiError } from '@/lib/rbac'
 
 // GET /api/workspaces/[slug]/activity - Get workspace activity feed (cursor-based pagination, 20/page)
 export const GET = withWorkspaceAccess('VIEWER')(
