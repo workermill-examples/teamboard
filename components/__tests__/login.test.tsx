@@ -9,10 +9,10 @@ import LoginPage from '@/app/login/page'
 vi.mock('next-auth/react')
 vi.mock('next/navigation')
 
-const mockUseSession = useSession as any<typeof useSession>
-const mockSignIn = signIn as any<typeof signIn>
-const mockUseRouter = useRouter as any<typeof useRouter>
-const mockUseSearchParams = useSearchParams as any<typeof useSearchParams>
+const mockUseSession = vi.mocked(useSession)
+const mockSignIn = vi.mocked(signIn)
+const mockUseRouter = vi.mocked(useRouter)
+const mockUseSearchParams = vi.mocked(useSearchParams)
 
 const mockRouter = {
   push: vi.fn(),
@@ -61,7 +61,7 @@ describe('Login Form Validation', () => {
 
     it('validates short email', () => {
       const error = validateEmail('a@')
-      expect(error).toBe('Please enter a valid email address')
+      expect(error).toBe('Email must be at least 3 characters')
     })
 
     it('validates invalid email format', () => {

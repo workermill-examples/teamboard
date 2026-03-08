@@ -1,6 +1,6 @@
 'use client'
 
-import { Suspense, useState, useEffect } from 'react'
+import { Suspense, useState, useEffect, useCallback } from 'react'
 import { useAuth } from '@/hooks/use-auth'
 import { useRouter } from 'next/navigation'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
@@ -42,14 +42,7 @@ function WorkspaceListContent() {
     }
   }, [isAuthenticated, isLoading, router])
 
-  // Fetch workspaces
-  useEffect(() => {
-    if (isAuthenticated) {
-      fetchWorkspaces()
-    }
-  }, [isAuthenticated])
-
-  const fetchWorkspaces = async () => {
+  const fetchWorkspaces = useCallback(async () => {
     try {
       setLoading(true)
       setError(null)
@@ -73,7 +66,14 @@ function WorkspaceListContent() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [router])
+
+  // Fetch workspaces
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchWorkspaces()
+    }
+  }, [isAuthenticated, fetchWorkspaces])
 
   const handleCreateWorkspace = async (e: React.FormEvent) => {
     e.preventDefault()
