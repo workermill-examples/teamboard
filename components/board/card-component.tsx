@@ -26,7 +26,7 @@ function PriorityBadge({ priority }: PriorityBadgeProps) {
     <span className={cn(
       'inline-flex items-center px-2 py-1 rounded-full text-xs font-medium border',
       className
-    )}>
+    )} data-testid="priority-badge">
       {label}
     </span>
   )
@@ -167,10 +167,11 @@ export function CardComponent({ card, isDragging, onClick }: CardComponentProps)
       }}
       role="button"
       tabIndex={0}
+      data-testid="card"
     >
         {/* Card Title */}
         <div className="mb-2">
-          <h4 className="text-sm font-medium text-foreground line-clamp-3 leading-tight">
+          <h4 className="text-sm font-medium text-foreground line-clamp-3 leading-tight" data-testid="card-title">
             {card.title}
           </h4>
         </div>
@@ -178,7 +179,7 @@ export function CardComponent({ card, isDragging, onClick }: CardComponentProps)
       {/* Description Preview */}
       {card.description && (
         <div className="mb-2">
-          <p className="text-xs text-muted-600 line-clamp-2 leading-relaxed">
+          <p className="text-xs text-muted-600 line-clamp-2 leading-relaxed" data-testid="card-description">
             {card.description}
           </p>
         </div>
@@ -231,7 +232,9 @@ export function CardComponent({ card, isDragging, onClick }: CardComponentProps)
 
         {/* Right side - Assignee */}
         {card.assignee && (
-          <AssigneeAvatar assignee={card.assignee} />
+          <div data-testid="card-assignee">
+            <AssigneeAvatar assignee={card.assignee} />
+          </div>
         )}
       </div>
     </Card>

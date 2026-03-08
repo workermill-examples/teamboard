@@ -109,6 +109,7 @@ export function NavLinks({ workspace, variant }: NavLinksProps) {
             size="sm"
             onClick={() => setBoardsExpanded(!boardsExpanded)}
             className="flex items-center gap-1 p-1 h-auto text-sm font-medium text-muted-700 hover:text-foreground"
+            data-testid={`nav-boards${variant === 'mobile' ? '-mobile' : '-desktop'}`}
           >
             {boardsExpanded ? (
               <ChevronDownIcon className="w-4 h-4" />
