@@ -91,7 +91,8 @@ export async function POST(
     await prisma.activity.create({
       data: {
         type: 'COLUMN_CREATED',
-        data: {
+        description: `Created column "${column.title}" in "${board.title}"`,
+        metadata: {
           columnId: column.id,
           columnTitle: column.title,
           boardId: params.id,
