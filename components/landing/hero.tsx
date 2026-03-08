@@ -67,7 +67,7 @@ export function Hero() {
                     "focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
                   )}
                 >
-                  <GitHubIcon className="mr-2 w-5 h-5" aria-hidden="true" />
+                  <GitHubIcon className="mr-2 w-5 h-5" aria-hidden={true} />
                   View on GitHub
                 </Link>
               </div>
