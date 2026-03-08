@@ -69,10 +69,10 @@ const features = [
 
 export function Features() {
   return (
-    <section id="features" className="py-24 bg-secondary-50">
+    <section id="features" className="py-32 bg-secondary-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-20">
+        <div className="text-center mb-24">
           <h2 className="text-base font-semibold text-primary-600 tracking-wide uppercase">
             Features
           </h2>
@@ -86,18 +86,18 @@ export function Features() {
         </div>
 
         {/* Features grid */}
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((feature, index) => (
             <div
               key={feature.title}
               className={cn(
                 "relative group bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300",
-                "border border-secondary-200 hover:border-primary-200 p-6",
+                "border border-secondary-200 hover:border-primary-200 p-8",
                 "transform hover:-translate-y-1"
               )}
             >
               {/* Icon */}
-              <div className="flex items-center justify-center w-12 h-12 mb-4">
+              <div className="flex items-center justify-center w-12 h-12 mb-6">
                 <div className={cn(
                   "w-12 h-12 rounded-lg bg-gradient-to-r flex items-center justify-center text-white",
                   feature.gradient,
@@ -108,7 +108,7 @@ export function Features() {
               </div>
 
               {/* Content */}
-              <h4 className="text-lg font-semibold text-secondary-900 mb-2 group-hover:text-primary-700 transition-colors">
+              <h4 className="text-lg font-semibold text-secondary-900 mb-3 group-hover:text-primary-700 transition-colors">
                 {feature.title}
               </h4>
 
@@ -123,7 +123,7 @@ export function Features() {
         </div>
 
         {/* CTA */}
-        <div className="mt-20 text-center">
+        <div className="mt-24 text-center">
           <p className="text-lg text-secondary-600 mb-8">
             Ready to transform your team&apos;s productivity?
           </p>

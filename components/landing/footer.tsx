@@ -117,7 +117,7 @@ export function LandingFooter() {
                 </li>
                 <li>
                   <a
-                    href="https://workermill.com/examples"
+                    href="https://workermill.com/#showcase"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-secondary-400 hover:text-white transition-colors"
