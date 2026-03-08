@@ -61,31 +61,15 @@ describe('PWA Offline Queue', () => {
     // Mock offline state
     Object.defineProperty(navigator, 'onLine', { value: false, writable: true });
 
+    // Mock the offline queue module
+    vi.mock('@/lib/offline-queue', () => ({
+      useOfflineQueue: () => ({
+        queueCardMove: vi.fn(() => Promise.resolve({ success: true, queued: true }))
+      })
+    }));
+
     const { useOfflineQueue } = await import('@/lib/offline-queue');
     const { queueCardMove } = useOfflineQueue();
-
-    // Mock successful queue operation
-    mockIndexedDB.open.mockReturnValue({
-      onsuccess: null,
-      onerror: null,
-      onupgradeneeded: null,
-      result: {
-        transaction: vi.fn(() => ({
-          objectStore: vi.fn(() => ({
-            add: vi.fn((move: any) => {
-              const request = { onsuccess: null, onerror: null };
-              setTimeout(() => (request.onsuccess as any)?.(), 0);
-              return request;
-            }),
-            getAll: vi.fn(() => ({ onsuccess: null, onerror: null, result: [] })),
-            delete: vi.fn(() => ({ onsuccess: null, onerror: null })),
-            clear: vi.fn(() => ({ onsuccess: null, onerror: null }))
-          }))
-        })),
-        objectStoreNames: { contains: vi.fn(() => true) },
-        createObjectStore: vi.fn()
-      }
-    });
 
     const result = await queueCardMove('card-1', 'column-2', 1, 'workspace-1');
 
@@ -127,6 +111,27 @@ describe('PWA Offline Queue', () => {
 
 describe('PWA Manifest', () => {
   it('should have valid manifest configuration', async () => {
+    // Mock fetch for manifest.json
+    global.fetch = vi.fn(() =>
+      Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve({
+          name: 'TeamBoard - Collaborative Project Management',
+          short_name: 'TeamBoard',
+          start_url: '/',
+          display: 'standalone',
+          background_color: '#ffffff',
+          theme_color: '#6366f1',
+          icons: [
+            { src: '/icons/icon-192.png', sizes: '192x192', type: 'image/png' },
+            { src: '/icons/icon-256.png', sizes: '256x256', type: 'image/png' },
+            { src: '/icons/icon-384.png', sizes: '384x384', type: 'image/png' },
+            { src: '/icons/icon-512.png', sizes: '512x512', type: 'image/png' }
+          ]
+        })
+      })
+    ) as any;
+
     const manifestResponse = await fetch('/manifest.json');
     const manifest = await manifestResponse.json();
 

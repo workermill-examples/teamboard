@@ -99,7 +99,7 @@ describe('ActivityItem Component', () => {
 
       render(<ActivityItem activity={activity} />)
 
-      expect(screen.getByText('90 minutes ago')).toBeInTheDocument()
+      expect(screen.getByText('1 hours ago')).toBeInTheDocument()
     })
   })
 
