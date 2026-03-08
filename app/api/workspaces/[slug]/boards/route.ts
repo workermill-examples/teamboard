@@ -120,7 +120,8 @@ export const POST = withWorkspaceAccess('MEMBER')(
       await prisma.activity.create({
         data: {
           type: 'BOARD_CREATED',
-          data: {
+          description: `Created board "${board.title}"`,
+          metadata: {
             boardId: board.id,
             boardTitle: board.title,
           },

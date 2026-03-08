@@ -215,7 +215,8 @@ export async function PUT(
       await prisma.activity.create({
         data: {
           type: 'BOARD_UPDATED',
-          data: {
+          description: `Renamed board from "${board.title}" to "${updatedBoard.title}"`,
+          metadata: {
             boardId: updatedBoard.id,
             boardTitle: updatedBoard.title,
             changes: { title: { from: board.title, to: updatedBoard.title } },
@@ -260,7 +261,8 @@ export async function DELETE(
     await prisma.activity.create({
       data: {
         type: 'BOARD_DELETED',
-        data: {
+        description: `Deleted board "${board.title}"`,
+        metadata: {
           boardId: board.id,
           boardTitle: board.title,
         },
