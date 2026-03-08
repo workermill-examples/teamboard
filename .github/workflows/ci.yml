@@ -118,6 +118,20 @@ jobs:
           NEXTAUTH_URL: http://localhost:3000
           AUTH_TRUST_HOST: true
 
+      - name: Seed test database
+        run: npm run db:seed
+        env:
+          DATABASE_URL: postgresql://teamboard:teamboard@localhost:5432/teamboard
+          DIRECT_DATABASE_URL: postgresql://teamboard:teamboard@localhost:5432/teamboard
+          SEED_TOKEN: local-dev-seed-token
+
+      - name: Verify seed data
+        run: ./scripts/verify-seed.sh
+        env:
+          DATABASE_URL: postgresql://teamboard:teamboard@localhost:5432/teamboard
+          DIRECT_DATABASE_URL: postgresql://teamboard:teamboard@localhost:5432/teamboard
+          EXPECTED_CARDS: 30
+
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
 
