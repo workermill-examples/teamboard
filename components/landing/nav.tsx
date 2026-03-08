@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
+import { GitHubIcon } from '@/components/ui/icons'
 
 export function LandingNav() {
   return (
@@ -39,6 +40,18 @@ export function LandingNav() {
               )}
             >
               How it works
+            </Link>
+            <Link
+              href="https://github.com/workermill-examples/teamboard"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={cn(
+                "inline-flex items-center space-x-2 text-secondary-600 hover:text-secondary-900 text-sm font-medium",
+                "transition-colors duration-200"
+              )}
+            >
+              <GitHubIcon className="w-4 h-4" />
+              <span>Source</span>
             </Link>
             <Link
               href="/login"
