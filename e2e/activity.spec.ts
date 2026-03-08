@@ -9,24 +9,24 @@ test.describe('Activity Feed', () => {
   })
 
   test.describe('Activity Display', () => {
-    test('should display activity feed', async ({ page }) => {
+    test('should display activity feed with entries', async ({ page }) => {
       await expect(page.locator('h1')).toContainText('Activity')
 
-      // Should show activity items
+      // Ticket requirement: activity feed loads with entries
       const activityCount = await page.locator('[data-testid="activity-item"]').count()
       expect(activityCount).toBeGreaterThan(0)
     })
 
-    test('should show activity information', async ({ page }) => {
+    test('should show entries with avatars and timestamps', async ({ page }) => {
       const firstActivity = page.locator('[data-testid="activity-item"]').first()
 
-      // Should show user avatar
+      // Ticket requirement: entries have avatars
       await expect(firstActivity.locator('[data-testid="activity-avatar"]')).toBeVisible()
 
       // Should show activity description
       await expect(firstActivity.locator('[data-testid="activity-description"]')).toBeVisible()
 
-      // Should show timestamp
+      // Ticket requirement: entries have timestamps
       await expect(firstActivity.locator('[data-testid="activity-timestamp"]')).toBeVisible()
     })
 
@@ -96,13 +96,13 @@ test.describe('Activity Feed', () => {
   })
 
   test.describe('Activity Pagination', () => {
-    test('should load more activities on scroll', async ({ page }) => {
+    test('should handle pagination properly', async ({ page }) => {
       const initialCount = await page.locator('[data-testid="activity-item"]').count()
 
-      // Scroll to bottom
+      // Scroll to bottom to trigger pagination
       await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight))
 
-      // Should load more activities (if available)
+      // Ticket requirement: pagination works
       await page.waitForTimeout(1000)
       const newCount = await page.locator('[data-testid="activity-item"]').count()
 
