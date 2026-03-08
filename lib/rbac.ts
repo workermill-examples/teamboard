@@ -239,6 +239,37 @@ export async function getCardWithAccess(
 }
 
 /**
+ * Get column with workspace access check
+ */
+export async function getColumnWithAccess(
+  columnId: string,
+  requiredRole: RequiredRole = 'VIEWER'
+): Promise<{ column: any; membership: WorkspaceMembership }> {
+  const column = await prisma.column.findUnique({
+    where: { id: columnId },
+    include: {
+      board: {
+        include: {
+          workspace: {
+            select: {
+              slug: true,
+            },
+          },
+        },
+      },
+    },
+  })
+
+  if (!column) {
+    throw new NotFoundError('Column not found')
+  }
+
+  const membership = await requireWorkspaceAccess(column.board.workspace.slug, requiredRole)
+
+  return { column, membership }
+}
+
+/**
  * Express-like middleware for API routes with workspace access
  */
 export function withWorkspaceAccess(
