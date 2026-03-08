@@ -21,7 +21,8 @@ test.describe('Board Management', () => {
       await page.goto('/acme-product/boards')
 
       // Should show demo boards from seed data
-      await expect(page.locator('[data-testid="board-card"]')).toHaveCount.toBeGreaterThan(0)
+      const boardCount = await page.locator('[data-testid="board-card"]').count()
+      expect(boardCount).toBeGreaterThan(0)
 
       // Should show board names
       await expect(page.locator('text=Product Roadmap')).toBeVisible()
@@ -62,10 +63,12 @@ test.describe('Board Management', () => {
       await expect(page.locator('h1')).toBeVisible()
 
       // Should show columns
-      await expect(page.locator('[data-testid="column"]')).toHaveCount.toBeGreaterThan(0)
+      const columnCount = await page.locator('[data-testid="column"]').count()
+      expect(columnCount).toBeGreaterThan(0)
 
       // Should show cards in columns
-      await expect(page.locator('[data-testid="card"]')).toHaveCount.toBeGreaterThan(0)
+      const cardCount = await page.locator('[data-testid="card"]').count()
+      expect(cardCount).toBeGreaterThan(0)
     })
 
     test('should show column information', async ({ page }) => {
@@ -273,7 +276,8 @@ test.describe('Board Management', () => {
 
       // Should show only cards assigned to demo user
       const cards = page.locator('[data-testid="card"]')
-      await expect(cards).toHaveCount.toBeGreaterThan(0)
+      const cardCount = await cards.count()
+      expect(cardCount).toBeGreaterThan(0)
 
       // All visible cards should have demo user assigned
       for (const card of await cards.all()) {

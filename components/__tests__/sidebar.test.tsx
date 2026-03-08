@@ -5,6 +5,7 @@ import { Sidebar } from '@/components/sidebar/sidebar'
 import { NavLinks } from '@/components/sidebar/nav-links'
 import { useWorkspace } from '@/hooks/use-workspace'
 import { useAuth } from '@/hooks/use-auth'
+import { vi } from 'vitest'
 
 // Mock Next.js hooks
 vi.mock('next/navigation')
@@ -16,9 +17,9 @@ vi.mock('next/link', () => ({
   }
 }))
 
-const mockUsePathname = usePathname as vi.MockedFunction<typeof usePathname>
-const mockUseWorkspace = useWorkspace as vi.MockedFunction<typeof useWorkspace>
-const mockUseAuth = useAuth as vi.MockedFunction<typeof useAuth>
+const mockUsePathname = usePathname as ReturnType<typeof vi.fn>
+const mockUseWorkspace = useWorkspace as ReturnType<typeof vi.fn>
+const mockUseAuth = useAuth as ReturnType<typeof vi.fn>
 
 const mockWorkspace = {
   id: '1',
@@ -127,7 +128,7 @@ describe('Sidebar Navigation', () => {
         ...mockWorkspaceContext,
         canManage: false,
         isAdmin: false,
-        hasPermission: (action) => action !== 'manage'
+        hasPermission: (action: any) => action !== 'manage'
       })
 
       render(<Sidebar variant="desktop" />)

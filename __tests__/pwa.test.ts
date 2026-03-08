@@ -68,16 +68,22 @@ describe('PWA Offline Queue', () => {
     mockIndexedDB.open.mockReturnValue({
       onsuccess: null,
       onerror: null,
+      onupgradeneeded: null,
       result: {
         transaction: vi.fn(() => ({
           objectStore: vi.fn(() => ({
-            add: vi.fn((move) => {
+            add: vi.fn((move: any) => {
               const request = { onsuccess: null, onerror: null };
-              setTimeout(() => request.onsuccess?.(), 0);
+              setTimeout(() => (request.onsuccess as any)?.(), 0);
               return request;
-            })
+            }),
+            getAll: vi.fn(() => ({ onsuccess: null, onerror: null, result: [] })),
+            delete: vi.fn(() => ({ onsuccess: null, onerror: null })),
+            clear: vi.fn(() => ({ onsuccess: null, onerror: null }))
           }))
-        }))
+        })),
+        objectStoreNames: { contains: vi.fn(() => true) },
+        createObjectStore: vi.fn()
       }
     });
 

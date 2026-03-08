@@ -1,9 +1,9 @@
 import { test, expect } from './fixtures/auth.fixture'
 
 test.describe('Dashboard', () => {
-  test.beforeEach(async ({ loginAs }) => {
+  test.beforeEach(async ({ loginAs, page }) => {
     await loginAs('demo@workermill.com', 'demo1234')
-    await test.step('Navigate to dashboard', async ({ page }) => {
+    await test.step('Navigate to dashboard', async () => {
       await page.goto('/acme-product/dashboard')
     })
   })

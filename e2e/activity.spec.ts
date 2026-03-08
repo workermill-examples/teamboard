@@ -1,9 +1,9 @@
 import { test, expect } from './fixtures/auth.fixture'
 
 test.describe('Activity Feed', () => {
-  test.beforeEach(async ({ loginAs }) => {
+  test.beforeEach(async ({ loginAs, page }) => {
     await loginAs('demo@workermill.com', 'demo1234')
-    await test.step('Navigate to activity feed', async ({ page }) => {
+    await test.step('Navigate to activity feed', async () => {
       await page.goto('/acme-product/activity')
     })
   })
@@ -13,7 +13,8 @@ test.describe('Activity Feed', () => {
       await expect(page.locator('h1')).toContainText('Activity')
 
       // Should show activity items
-      await expect(page.locator('[data-testid="activity-item"]')).toHaveCount.toBeGreaterThan(0)
+      const activityCount = await page.locator('[data-testid="activity-item"]').count()
+      expect(activityCount).toBeGreaterThan(0)
     })
 
     test('should show activity information', async ({ page }) => {
@@ -33,7 +34,8 @@ test.describe('Activity Feed', () => {
       const activities = page.locator('[data-testid="activity-item"]')
 
       // Should have various activity types from seed data
-      await expect(activities).toHaveCount.toBeGreaterThan(5)
+      const activityCount = await activities.count()
+      expect(activityCount).toBeGreaterThan(5)
 
       // Look for different activity descriptions
       await expect(page.locator('text=created card')).toBeVisible()
@@ -88,7 +90,8 @@ test.describe('Activity Feed', () => {
       })
 
       // Activity feed should still be functional
-      await expect(page.locator('[data-testid="activity-item"]')).toHaveCount.toBeGreaterThan(0)
+      const activityCount = await page.locator('[data-testid="activity-item"]').count()
+      expect(activityCount).toBeGreaterThan(0)
     })
   })
 
@@ -117,7 +120,8 @@ test.describe('Activity Feed', () => {
         await loadMoreButton.click()
 
         // Should load additional activities
-        await expect(page.locator('[data-testid="activity-item"]')).toHaveCount.toBeGreaterThan(0)
+        const activityCount = await page.locator('[data-testid="activity-item"]').count()
+        expect(activityCount).toBeGreaterThan(0)
       }
     })
   })
@@ -183,13 +187,15 @@ test.describe('Activity Feed', () => {
       await page.goto('/acme-product/activity')
 
       // Should eventually show activities
-      await expect(page.locator('[data-testid="activity-item"]')).toHaveCount.toBeGreaterThan(0)
+      const activityCount = await page.locator('[data-testid="activity-item"]').count()
+      expect(activityCount).toBeGreaterThan(0)
     })
 
     test('should handle empty activity feed', async ({ page }) => {
       // For demo data, there should always be activities
       // In a real scenario, you might test with a fresh workspace
-      await expect(page.locator('[data-testid="activity-item"]')).toHaveCount.toBeGreaterThan(0)
+      const activityCount = await page.locator('[data-testid="activity-item"]').count()
+      expect(activityCount).toBeGreaterThan(0)
     })
   })
 

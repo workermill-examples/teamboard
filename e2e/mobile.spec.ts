@@ -76,10 +76,11 @@ test.describe('Mobile Experience', () => {
       await expect(boardContainer).toBeVisible()
 
       // Should be able to scroll horizontally through columns
-      await boardContainer.scroll({ left: 200 })
+      await boardContainer.evaluate(el => el.scrollLeft = 200)
 
       // Columns should remain visible
-      await expect(page.locator('[data-testid="column"]')).toHaveCount.toBeGreaterThan(0)
+      const columnCount = await page.locator('[data-testid="column"]').count()
+      expect(columnCount).toBeGreaterThan(0)
     })
 
     test('should support touch drag for cards', async ({ page }) => {
@@ -180,7 +181,8 @@ test.describe('Mobile Experience', () => {
 
       // Charts should stack vertically on mobile
       const charts = page.locator('[data-testid^="chart-"]')
-      await expect(charts).toHaveCount.toBeGreaterThan(0)
+      const chartCount = await charts.count()
+      expect(chartCount).toBeGreaterThan(0)
 
       // Content should not overflow horizontally
       const bodyWidth = await page.evaluate(() => document.body.scrollWidth)
@@ -254,7 +256,8 @@ test.describe('Mobile Experience', () => {
       await page.waitForTimeout(1000)
 
       // Should handle scrolling without issues
-      await expect(page.locator('[data-testid="activity-item"]')).toHaveCount.toBeGreaterThan(0)
+      const activityCount = await page.locator('[data-testid="activity-item"]').count()
+      expect(activityCount).toBeGreaterThan(0)
     })
   })
 

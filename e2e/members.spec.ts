@@ -1,9 +1,9 @@
 import { test, expect } from './fixtures/auth.fixture'
 
 test.describe('Members Management', () => {
-  test.beforeEach(async ({ loginAs }) => {
+  test.beforeEach(async ({ loginAs, page }) => {
     await loginAs('demo@workermill.com', 'demo1234')
-    await test.step('Navigate to members page', async ({ page }) => {
+    await test.step('Navigate to members page', async () => {
       await page.goto('/acme-product/members')
     })
   })
@@ -13,7 +13,8 @@ test.describe('Members Management', () => {
       await expect(page.locator('h1')).toContainText('Members')
 
       // Should show members list
-      await expect(page.locator('[data-testid="member-item"]')).toHaveCount.toBeGreaterThan(0)
+      const memberCount = await page.locator('[data-testid="member-item"]').count()
+      expect(memberCount).toBeGreaterThan(0)
 
       // Should show demo user as owner
       const demoMember = page.locator('[data-testid="member-item"]:has-text("demo@workermill.com")')
@@ -231,7 +232,8 @@ test.describe('Members Management', () => {
         await expect(page.locator('[data-testid="invite-form"]')).toBeVisible()
 
         // Should see role management options
-        await expect(page.locator('[data-testid="remove-member"]')).toHaveCount.toBeGreaterThan(0)
+        const removeCount = await page.locator('[data-testid="remove-member"]').count()
+        expect(removeCount).toBeGreaterThan(0)
       }
     })
   })

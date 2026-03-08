@@ -3,6 +3,7 @@ import { TasksByStatusPie } from '@/components/dashboard/tasks-by-status-pie'
 import { TasksByAssigneeBar } from '@/components/dashboard/tasks-by-assignee-bar'
 import { TasksOverTimeLine } from '@/components/dashboard/tasks-over-time-line'
 import { OverdueCountCard } from '@/components/dashboard/overdue-count-card'
+import { vi } from 'vitest'
 
 // Mock Recharts to avoid rendering issues in test environment
 vi.mock('recharts', () => ({

@@ -4,16 +4,17 @@ import { useSession, signIn } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { validateLoginForm, validateEmail, validatePassword } from '@/lib/client-utils'
 import LoginPage from '@/app/login/page'
+import { vi } from 'vitest'
 
 // Mock Next.js hooks and NextAuth
 vi.mock('next-auth/react')
 vi.mock('next/navigation')
 vi.mock('@/hooks/use-auth')
 
-const mockUseSession = useSession as vi.MockedFunction<typeof useSession>
-const mockSignIn = signIn as vi.MockedFunction<typeof signIn>
-const mockUseRouter = useRouter as vi.MockedFunction<typeof useRouter>
-const mockUseSearchParams = useSearchParams as vi.MockedFunction<typeof useSearchParams>
+const mockUseSession = useSession as ReturnType<typeof vi.fn>
+const mockSignIn = signIn as ReturnType<typeof vi.fn>
+const mockUseRouter = useRouter as ReturnType<typeof vi.fn>
+const mockUseSearchParams = useSearchParams as ReturnType<typeof vi.fn>
 
 // Mock the auth hooks
 import * as useAuth from '@/hooks/use-auth'
@@ -21,7 +22,7 @@ const mockLogin = vi.fn()
 const mockUseLogin = vi.fn(() => ({
   login: mockLogin,
   loading: false,
-  error: null,
+  error: null as string | null,
   clearError: vi.fn()
 }))
 const mockUseRedirectIfAuthenticated = vi.fn(() => ({

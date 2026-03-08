@@ -27,7 +27,7 @@ test.describe('PWA Features', () => {
       expect(manifest.background_color).toBeTruthy()
 
       // Validate icons
-      expect(manifest.icons).toHaveLength.toBeGreaterThan(0)
+      expect(manifest.icons.length).toBeGreaterThan(0)
       for (const icon of manifest.icons) {
         expect(icon.src).toBeTruthy()
         expect(icon.sizes).toBeTruthy()
@@ -168,7 +168,8 @@ test.describe('PWA Features', () => {
       await firstCard.dragTo(targetColumn.locator('[data-testid="add-card-button"]'))
 
       // Card should move optimistically
-      await expect(targetColumn.locator('[data-testid="card"]')).toHaveCount.toBeGreaterThan(0)
+      const cardCount = await targetColumn.locator('[data-testid="card"]').count()
+      expect(cardCount).toBeGreaterThan(0)
 
       // Should show pending/queued indicator
       const queueIndicator = page.locator('[data-testid="sync-queue"]')
@@ -214,8 +215,10 @@ test.describe('PWA Features', () => {
       await page.reload()
 
       // Board should be visible but in read-only mode
-      await expect(page.locator('[data-testid="column"]')).toHaveCount.toBeGreaterThan(0)
-      await expect(page.locator('[data-testid="card"]')).toHaveCount.toBeGreaterThan(0)
+      const columnCount = await page.locator('[data-testid="column"]').count()
+      expect(columnCount).toBeGreaterThan(0)
+      const cardCount = await page.locator('[data-testid="card"]').count()
+      expect(cardCount).toBeGreaterThan(0)
 
       // Editing features should be disabled or show offline message
       const addCardButton = page.locator('[data-testid="add-card-button"]')
@@ -231,7 +234,7 @@ test.describe('PWA Features', () => {
     test('should show install prompt on supported browsers', async ({ page, browserName }) => {
       // Skip this test on unsupported browsers
       if (browserName !== 'chromium') {
-        test.skip('Install prompt only works in Chromium-based browsers')
+        test.skip(true, 'Install prompt only works in Chromium-based browsers')
       }
 
       await page.goto('/')
