@@ -10,15 +10,15 @@ import { useAuth } from '@/hooks/use-auth'
 vi.mock('next/navigation')
 vi.mock('@/hooks/use-workspace')
 vi.mock('@/hooks/use-auth')
-vi.mock('next/link', () => ({
+vi.mock('next/link', () => {
   default: function MockLink({ children, href, ...props }: { children: React.ReactNode; href: string }) {
     return <a href={href} {...props}>{children}</a>
   }
-}))
+})
 
-const mockUsePathname = vi.mocked(usePathname)
-const mockUseWorkspace = vi.mocked(useWorkspace)
-const mockUseAuth = vi.mocked(useAuth)
+const mockUsePathname = usePathname as any<typeof usePathname>
+const mockUseWorkspace = useWorkspace as any<typeof useWorkspace>
+const mockUseAuth = useAuth as any<typeof useAuth>
 
 const mockWorkspace = {
   id: '1',

@@ -1,36 +1,25 @@
-import { PrismaClient } from '@prisma/client'
+import { chromium } from '@playwright/test'
 
 async function globalSetup() {
-  const prisma = new PrismaClient()
+  // Start database and seed demo data
+  const browser = await chromium.launch()
+  const page = await browser.newPage()
 
   try {
-    // Ensure demo user exists for tests
-    const demoUser = await prisma.user.findUnique({
-      where: { email: 'demo@workermill.com' },
+    // Call seed API to ensure demo data is available
+    const response = await page.request.post('/api/seed', {
+      headers: {
+        'Authorization': 'Bearer local-dev-seed-token'
+      }
     })
 
-    if (!demoUser) {
-      console.log('Demo user not found, seeding database...')
-
-      // Call the seed API
-      const response = await fetch(`${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/api/seed`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${process.env.SEED_TOKEN}`,
-          'Content-Type': 'application/json',
-        },
-      })
-
-      if (response.ok) {
-        console.log('Database seeded successfully')
-      } else {
-        console.log('Database already seeded or seed failed')
-      }
+    if (!response.ok()) {
+      console.log('Seed API response:', response.status(), await response.text())
     }
   } catch (error) {
-    console.log('Global setup warning:', error)
+    console.log('Seed setup error:', error)
   } finally {
-    await prisma.$disconnect()
+    await browser.close()
   }
 }
 

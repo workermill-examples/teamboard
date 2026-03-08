@@ -3,12 +3,12 @@ import { ActivityItem } from '@/components/activity/activity-item'
 import { Activity } from '@/hooks/use-activity'
 
 // Mock Next.js Image component
-vi.mock('next/image', () => ({
+vi.mock('next/image', () => {
   default: function MockImage({ src, alt, ...props }: any) {
     // eslint-disable-next-line @next/next/no-img-element
     return <img src={src} alt={alt} {...props} />
   }
-}))
+})
 
 // Mock date formatting utility
 vi.mock('@/lib/utils', () => ({

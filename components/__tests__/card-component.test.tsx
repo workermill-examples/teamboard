@@ -289,9 +289,9 @@ describe('Card Component', () => {
 
       renderCard(cardWithoutComments)
 
-      // Should not show comment count section
-      const textContent = screen.getByRole('generic').textContent
-      expect(textContent).not.toMatch(/\b0\b.*comment/)
+      // Should not show comment count section - look for comment icon's parent
+      const commentIcon = screen.queryByTestId('comment-count')
+      expect(commentIcon).not.toBeInTheDocument()
     })
 
     it('hides checklist count when zero', () => {
@@ -308,19 +308,17 @@ describe('Card Component', () => {
   })
 
   describe('Interaction and States', () => {
-    it('calls onClick when card is clicked', async () => {
+    it('calls onClick when card is clicked', () => {
       const onClick = vi.fn()
-      const user = userEvent.setup()
 
       renderCard(mockCard, { onClick })
 
-      const cardElement = screen.getByText('Implement user authentication').closest('[role="button"]')
-        || screen.getByText('Implement user authentication').closest('div')
+      // Find the card by its button role
+      const cardElement = screen.getByRole('button')
 
-      if (cardElement) {
-        await user.click(cardElement)
-        expect(onClick).toHaveBeenCalled()
-      }
+      // Use fireEvent instead of userEvent for testing with drag-drop
+      fireEvent.click(cardElement)
+      expect(onClick).toHaveBeenCalled()
     })
 
     it('applies dragging styles when isDragging is true', () => {
@@ -340,7 +338,7 @@ describe('Card Component', () => {
     it('is accessible as a clickable element', () => {
       renderCard(mockCard)
 
-      const cardElement = screen.getByText('Implement user authentication').closest('div')
+      const cardElement = screen.getByRole('button')
       expect(cardElement).toHaveClass('cursor-pointer')
     })
   })

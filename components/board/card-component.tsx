@@ -158,14 +158,21 @@ export function CardComponent({ card, isDragging, onClick }: CardComponentProps)
         ...style,
         borderTopColor: card.coverColor || undefined,
       }}
-      onClick={onClick}
+      onClick={(e) => {
+        // Call onClick only if not dragging and onClick is provided
+        if (!isCurrentlyDragging && onClick) {
+          onClick()
+        }
+      }}
+      role="button"
+      tabIndex={0}
     >
-      {/* Card Title */}
-      <div className="mb-2">
-        <h4 className="text-sm font-medium text-foreground line-clamp-3 leading-tight">
-          {card.title}
-        </h4>
-      </div>
+        {/* Card Title */}
+        <div className="mb-2">
+          <h4 className="text-sm font-medium text-foreground line-clamp-3 leading-tight">
+            {card.title}
+          </h4>
+        </div>
 
       {/* Description Preview */}
       {card.description && (
@@ -212,7 +219,7 @@ export function CardComponent({ card, isDragging, onClick }: CardComponentProps)
             <ChecklistProgress checklistCount={card.checklistCount} />
           )}
           {card.commentCount > 0 && (
-            <span className="inline-flex items-center text-xs text-muted-600">
+            <span className="inline-flex items-center text-xs text-muted-600" data-testid="comment-count">
               <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
               </svg>
