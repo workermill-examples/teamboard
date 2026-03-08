@@ -12,8 +12,8 @@ import { validateLoginForm, type LoginFormData } from '@/lib/client-utils'
 function LoginForm() {
   const { login, loading, error, clearError } = useLogin()
   const [formData, setFormData] = useState<LoginFormData>({
-    email: '',
-    password: '',
+    email: 'demo@workermill.com',
+    password: 'demo1234',
   })
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
   const [hasInteracted, setHasInteracted] = useState(false)
@@ -117,6 +117,10 @@ function LoginForm() {
               >
                 {loading ? 'Signing in...' : 'Sign in'}
               </Button>
+
+              <p className="mt-3 text-sm text-muted-600 text-center">
+                <strong>Demo credentials:</strong> demo@workermill.com / demo1234
+              </p>
             </form>
           </CardContent>
           <CardFooter className="flex flex-col space-y-2 text-center">
@@ -131,18 +135,6 @@ function LoginForm() {
             </p>
           </CardFooter>
         </Card>
-
-        <div className="mt-8 text-center">
-          <p className="text-sm text-muted-500">
-            Want to see a demo?{' '}
-            <Link
-              href="/"
-              className="font-medium text-primary-600 hover:text-primary-500 transition-colors"
-            >
-              Try the demo
-            </Link>
-          </p>
-        </div>
       </div>
     </div>
   )
