@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
+import { GitHubIcon } from '@/components/ui/icons'
 
 export function Hero() {
   return (
@@ -56,7 +57,9 @@ export function Hero() {
                 </Link>
 
                 <Link
-                  href="#features"
+                  href="https://github.com/workermill-examples/teamboard"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className={cn(
                     "inline-flex items-center justify-center px-8 py-3 text-base font-medium",
                     "text-primary-700 bg-white hover:bg-secondary-50 border border-primary-300",
@@ -64,8 +67,22 @@ export function Hero() {
                     "focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
                   )}
                 >
-                  Learn more
+                  <GitHubIcon className="mr-2 w-5 h-5" aria-hidden="true" />
+                  View on GitHub
                 </Link>
+              </div>
+
+              {/* Demo credentials hint */}
+              <div className="mt-6 flex justify-center">
+                <p className="text-sm text-secondary-500">
+                  <code className="bg-secondary-100 px-2 py-1 rounded text-secondary-700 font-mono">
+                    demo@workermill.com
+                  </code>
+                  {' · '}
+                  <code className="bg-secondary-100 px-2 py-1 rounded text-secondary-700 font-mono">
+                    demo1234
+                  </code>
+                </p>
               </div>
 
               {/* Trust indicators */}
