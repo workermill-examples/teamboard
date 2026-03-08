@@ -80,10 +80,10 @@ const colorStyles = {
 
 export function HowItWorks() {
   return (
-    <section id="how-it-works" className="py-24 bg-white">
+    <section id="how-it-works" className="py-32 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-20">
+        <div className="text-center mb-24">
           <h2 className="text-base font-semibold text-primary-600 tracking-wide uppercase">
             How it works
           </h2>
@@ -97,7 +97,7 @@ export function HowItWorks() {
         </div>
 
         {/* Steps */}
-        <div className="space-y-16 lg:space-y-20">
+        <div className="space-y-20 lg:space-y-24">
           {steps.map((step, index) => {
             const styles = colorStyles[step.color as keyof typeof colorStyles]
             const isEven = index % 2 === 0
@@ -128,11 +128,11 @@ export function HowItWorks() {
                     )} />
                   </div>
 
-                  <h4 className="text-2xl font-bold text-secondary-900 mb-4">
+                  <h4 className="text-2xl font-bold text-secondary-900 mb-6">
                     {step.title}
                   </h4>
 
-                  <p className="text-lg text-secondary-600 leading-relaxed mb-6">
+                  <p className="text-lg text-secondary-600 leading-relaxed mb-8">
                     {step.description}
                   </p>
 
@@ -161,20 +161,20 @@ export function HowItWorks() {
 
                     {/* Main card */}
                     <div className={cn(
-                      "relative bg-white rounded-lg shadow-lg border-2 p-8",
+                      "relative bg-white rounded-lg shadow-lg border-2 p-10",
                       styles.border,
                       styles.lightBg
                     )}>
                       {/* Icon */}
                       <div className={cn(
-                        "flex items-center justify-center w-16 h-16 rounded-lg text-white mb-4",
+                        "flex items-center justify-center w-16 h-16 rounded-lg text-white mb-6",
                         styles.bg
                       )}>
                         {step.icon}
                       </div>
 
                       {/* Placeholder content based on step */}
-                      <div className="space-y-3">
+                      <div className="space-y-4">
                         {step.step === '01' && (
                           <>
                             <div className="h-4 bg-secondary-200 rounded w-3/4" />

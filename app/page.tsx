@@ -8,7 +8,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen">
       <LandingNav />
-      <main>
+      <main className="space-y-0">
         <Hero />
         <Features />
         <HowItWorks />
