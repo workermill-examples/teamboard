@@ -15,11 +15,11 @@ export function Hero() {
 
       {/* Content */}
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="pt-20 pb-24 sm:pt-24 sm:pb-32 lg:pt-32 lg:pb-40">
-          <div className="lg:grid lg:grid-cols-12 lg:gap-8 lg:items-center">
+        <div className="pt-20 pb-24 sm:pt-24 sm:pb-32 lg:pt-32 lg:pb-48">
+          <div className="lg:grid lg:grid-cols-2 lg:gap-16 lg:items-center">
 
             {/* Text content */}
-            <div className="lg:col-span-7">
+            <div>
               <h1 className="text-4xl font-bold tracking-tight text-secondary-900 sm:text-5xl lg:text-6xl">
                 <span className="block">Streamline your</span>
                 <span className="block text-primary-600">team&apos;s workflow</span>
@@ -73,7 +73,7 @@ export function Hero() {
               </div>
 
               {/* Demo credentials hint */}
-              <div className="mt-6 flex justify-center">
+              <div className="mt-6 flex justify-start">
                 <p className="text-sm text-secondary-500">
                   <code className="bg-secondary-100 px-2 py-1 rounded text-secondary-700 font-mono">
                     demo@workermill.com
@@ -101,7 +101,7 @@ export function Hero() {
             </div>
 
             {/* Visual element */}
-            <div className="mt-12 lg:mt-0 lg:col-span-5">
+            <div className="mt-12 lg:mt-0">
               <div className="mx-auto max-w-lg">
                 {/* Dashboard preview mockup */}
                 <div className="relative">
