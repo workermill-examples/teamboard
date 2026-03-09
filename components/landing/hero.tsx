@@ -102,7 +102,7 @@ export function Hero() {
 
             {/* Visual element */}
             <div className="mt-12 lg:mt-0">
-              <div className="mx-auto max-w-lg">
+              <div className="w-full">
                 {/* Dashboard preview mockup */}
                 <div className="relative">
                   <div className="absolute inset-0 bg-gradient-to-r from-primary-400 to-accent-400 transform rotate-6 rounded-lg opacity-20 blur-sm"></div>
@@ -120,34 +120,34 @@ export function Hero() {
                     </div>
 
                     {/* Content */}
-                    <div className="p-6 space-y-4">
+                    <div className="p-8 space-y-4">
                       {/* Title */}
                       <div className="h-8 bg-gradient-to-r from-primary-200 to-primary-300 rounded w-3/4"></div>
 
                       {/* Kanban columns */}
-                      <div className="grid grid-cols-3 gap-3">
+                      <div className="grid grid-cols-3 gap-4">
                         <div className="space-y-2">
                           <div className="h-6 bg-secondary-200 rounded w-full"></div>
                           <div className="space-y-2">
-                            <div className="h-16 bg-primary-100 rounded border-l-4 border-primary-400"></div>
-                            <div className="h-12 bg-accent-100 rounded border-l-4 border-accent-400"></div>
+                            <div className="h-24 bg-primary-100 rounded border-l-4 border-primary-400"></div>
+                            <div className="h-20 bg-accent-100 rounded border-l-4 border-accent-400"></div>
                           </div>
                         </div>
 
                         <div className="space-y-2">
                           <div className="h-6 bg-secondary-200 rounded w-full"></div>
                           <div className="space-y-2">
-                            <div className="h-12 bg-warning-100 rounded border-l-4 border-warning-400"></div>
-                            <div className="h-16 bg-success-100 rounded border-l-4 border-success-400"></div>
-                            <div className="h-12 bg-primary-100 rounded border-l-4 border-primary-400"></div>
+                            <div className="h-20 bg-warning-100 rounded border-l-4 border-warning-400"></div>
+                            <div className="h-24 bg-success-100 rounded border-l-4 border-success-400"></div>
+                            <div className="h-20 bg-primary-100 rounded border-l-4 border-primary-400"></div>
                           </div>
                         </div>
 
                         <div className="space-y-2">
                           <div className="h-6 bg-secondary-200 rounded w-full"></div>
                           <div className="space-y-2">
-                            <div className="h-12 bg-accent-100 rounded border-l-4 border-accent-400"></div>
-                            <div className="h-16 bg-success-100 rounded border-l-4 border-success-400"></div>
+                            <div className="h-20 bg-accent-100 rounded border-l-4 border-accent-400"></div>
+                            <div className="h-24 bg-success-100 rounded border-l-4 border-success-400"></div>
                           </div>
                         </div>
                       </div>
